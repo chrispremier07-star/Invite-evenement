@@ -1,0 +1,13 @@
+node_modules
+dist
+.env
+.env.local
+*.log
+.devdb
+playwright-report
+test-results
+backups
+coverage
+.DS_Store
+lh
+prototype/uploads

@@ -1,0 +1,24 @@
+# Modèle Fly.io : `fly launch --no-deploy --copy-config` demande le nom de l'application, puis `fly secrets set` pour chaque variable de .env.example.
+[build]
+
+[env]
+  NODE_ENV = "production"
+  HOST = "0.0.0.0"
+  PORT = "3100"
+  TRUST_PROXY = "true"
+  LOG_LEVEL = "info"
+  FORM_DIST_DIR = "apps/form/dist"
+  STUDIO_DIST_DIR = "apps/studio/dist"
+
+[http_service]
+  internal_port = 3100
+  force_https = true
+  auto_stop_machines = "off"
+  min_machines_running = 1
+
+  [[http_service.checks]]
+    method = "GET"
+    path = "/health"
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "20s"

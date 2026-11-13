@@ -1,0 +1,83 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  # Services de test lancés ci-dessous ; les secrets sont générés à chaque exécution.
+  POSTGRES_USER: cree
+  POSTGRES_PASSWORD: cree_ci_password
+  POSTGRES_DB: cree
+  POSTGRES_PORT: '54340'
+  DATABASE_URL: postgres://cree:cree_ci_password@localhost:54340/cree
+  TEST_DATABASE_URL: postgres://cree:cree_ci_password@localhost:54340/cree_test
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: cree
+          POSTGRES_PASSWORD: cree_ci_password
+          POSTGRES_DB: cree
+        ports: ['54340:5432']
+        options: >-
+          --health-cmd "pg_isready -U cree" --health-interval 3s --health-timeout 3s --health-retries 20
+      mailpit:
+        image: axllent/mailpit:latest
+        ports: ['1125:1025', '8125:8025']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - name: Stockage S3 de test (MinIO)
+        run: |
+          docker run -d --name minio -p 9100:9000 \
+            -e MINIO_ROOT_USER=cree_minio_user -e MINIO_ROOT_PASSWORD=cree_minio_password \
+            -e MINIO_DEFAULT_BUCKETS=cree-uploads bitnamilegacy/minio:latest
+          for i in $(seq 1 30); do curl -sf http://localhost:9100/minio/health/live && break; sleep 2; done
+      - name: Fichier .env de CI
+        run: |
+          cp .env.example .env
+          node scripts/vapid.mjs | grep '=' | while IFS= read -r line; do key="${line%%=*}"; sed -i "s|^$key=.*|$line|" .env; done
+          sed -i "s|^SESSION_SECRET=.*|SESSION_SECRET=$(openssl rand -base64 48 | tr -d '/+=\n')|; s|^IP_HASH_SECRET=.*|IP_HASH_SECRET=$(openssl rand -base64 48 | tr -d '/+=\n')|" .env
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run grep:faux
+      - run: npm test
+      - run: npm run build
+      - name: Tests de bout en bout
+        run: |
+          npx playwright install --with-deps chromium
+          npm run test:e2e
+      - name: Vérification de la restauration
+        run: |
+          sudo apt-get install -y postgresql-client
+          npm run db:migrate
+          npm run backup:verify
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: |
+            test-results
+            playwright-report
+
+  deploy:
+    needs: check
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Déploiement (ignoré tant que FLY_API_TOKEN n'est pas défini)
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          FLY_APP: ${{ vars.FLY_APP }}
+        run: |
+          if [ -z "$FLY_API_TOKEN" ] || [ -z "$FLY_APP" ]; then echo "Déploiement non configuré (secret FLY_API_TOKEN et variable FLY_APP)."; exit 0; fi
+          flyctl deploy --remote-only --app "$FLY_APP"

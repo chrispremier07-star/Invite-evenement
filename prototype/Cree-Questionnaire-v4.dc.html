@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#F5F2FC"/><circle cx="50" cy="50" r="20" fill="none" stroke="#6A3DE8" stroke-width="9"/></svg></template>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;background:#F5F2FC;-webkit-text-size-adjust:100%}
+*{-webkit-tap-highlight-color:transparent}
+a{color:#5A36D6}a:hover{color:#15112A}
+button,input,textarea{font-family:'Geist',system-ui,sans-serif;color:#15112A}
+button:focus-visible,input:focus-visible,textarea:focus-visible,#cr-title:focus-visible{outline:2px solid #7B52F0;outline-offset:3px}
+#cr-title:focus{outline:none}
+.cr-lb{font:500 12px/1.4 'Geist Mono',ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;color:#5A36D6}
+.cr-o2{font:400 12px/1.4 'Geist',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#625C78}
+.cr-f{position:relative}
+.cr-f input,.cr-f textarea{width:100%;box-sizing:border-box;min-height:58px;padding:26px 16px 8px;font:400 16px/1.3 'Geist',sans-serif;background:rgba(255,255,255,.85);border:1px solid rgba(123,82,240,.38);border-radius:14px;outline:none;transition:box-shadow .35s,background .35s,border-color .35s;appearance:none;-webkit-appearance:none;display:block}
+.cr-f textarea{min-height:120px;resize:vertical;padding-top:30px}
+.cr-f label{position:absolute;left:17px;top:19px;max-width:calc(100% - 110px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font:400 16px/1.2 'Geist',sans-serif;color:#625C78;transform-origin:left top;transition:transform .35s cubic-bezier(.2,.7,.2,1),color .3s;pointer-events:none}
+.cr-f input:focus+label,.cr-f input:not(:placeholder-shown)+label,.cr-f textarea:focus+label,.cr-f textarea:not(:placeholder-shown)+label,.cr-f.up label{transform:translateY(-11px) scale(.76);color:#5A36D6}
+.cr-f i{position:absolute;left:6px;right:6px;bottom:0;height:1px;background:#7B52F0;transform:scaleX(0);transform-origin:left;transition:transform .6s cubic-bezier(.2,.7,.2,1);pointer-events:none}
+.cr-f:focus-within i{transform:scaleX(1)}
+.cr-f:focus-within input,.cr-f:focus-within textarea{background:#fff;border-color:rgba(123,82,240,.7);box-shadow:0 0 0 5px rgba(140,90,255,.14),0 12px 32px -14px rgba(123,82,240,.45)}
+.cr-f.bad input,.cr-f.bad textarea{border-color:#B35468}
+.cr-f b{position:absolute;right:14px;bottom:14px;width:6px;height:6px;border-radius:50%;background:#7B52F0;opacity:0;transform:scale(0);transition:opacity .3s,transform .4s cubic-bezier(.34,1.56,.64,1)}
+.cr-f.ok b{opacity:1;transform:scale(1)}
+.cr-f .cr-t{position:absolute;right:14px;top:9px;font:400 11px/1 'Geist',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#625C78;pointer-events:none}
+.cr-e{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .4s cubic-bezier(.2,.7,.2,1),opacity .3s}
+.cr-e.o{grid-template-rows:1fr;opacity:1}
+.cr-e>div{overflow:hidden;min-height:0}
+.cr-e p{margin:8px 2px 0;font-size:14px;line-height:1.4;color:#8E1B33}
+.cr-c{position:relative;box-sizing:border-box;min-height:56px;padding:14px 16px;display:flex;align-items:center;gap:10px;text-align:left;font:500 16px/1.25 'Geist',sans-serif;background:rgba(255,255,255,.7);border:1px solid rgba(123,82,240,.3);border-radius:16px;cursor:pointer;transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s,background .35s}
+.cr-c.pill{border-radius:999px;padding:0 20px;min-height:48px}
+.cr-c:hover{transform:translateY(-2px);box-shadow:0 14px 28px -16px rgba(21,17,42,.28);background:#fff}
+.cr-c:active{transform:translateY(0) scale(.98)}
+.cr-c::before{content:'';position:absolute;inset:-1px;border:1.5px solid #7B52F0;border-radius:inherit;clip-path:inset(0 100% 0 0);transition:clip-path .55s cubic-bezier(.2,.7,.2,1);pointer-events:none}
+.cr-c[aria-pressed=true]{background:#FFFDF8;box-shadow:0 14px 30px -16px rgba(123,82,240,.55)}
+.cr-c[aria-pressed=true]::before{clip-path:inset(0 0 0 0)}
+.cr-c svg{flex:none;width:18px;height:18px;margin-left:auto}
+.cr-c.pill svg{width:0;margin:0;transition:width .3s}
+.cr-c.pill[aria-pressed=true] svg{width:16px}
+.cr-c svg path{stroke-dasharray:22;stroke-dashoffset:22;transition:stroke-dashoffset .45s .12s cubic-bezier(.2,.7,.2,1)}
+.cr-c[aria-pressed=true] svg path{stroke-dashoffset:0}
+.cr-c.pill svg{margin-left:0}
+.cr-b{position:relative;overflow:hidden;flex:0 1 280px;min-height:54px;padding:0 28px;display:inline-flex;align-items:center;justify-content:center;gap:10px;font:600 13px/1 'Geist',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#FCFBFF;background:#15112A;border:0;border-radius:999px;cursor:pointer;box-shadow:0 12px 28px -12px rgba(21,17,42,.6);transition:transform .25s cubic-bezier(.2,.7,.2,1),box-shadow .3s}
+.cr-b:hover{box-shadow:0 16px 34px -12px rgba(21,17,42,.7)}
+.cr-b:active{transform:scale(.97)}
+.cr-b::after{content:'';position:absolute;top:0;bottom:0;left:0;width:45%;background:linear-gradient(105deg,transparent,rgba(255,240,205,.4),transparent);transform:translateX(-130%) skewX(-18deg);animation:crShine 5.5s 1.5s ease-in-out infinite;pointer-events:none}
+.cr-b[aria-busy=true]{cursor:progress}
+.cr-sp{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,248,238,.3);border-top-color:#FCFBFF;animation:crSpin .8s linear infinite}
+.cr-g{position:relative;min-height:48px;padding:0 14px;background:none;border:0;cursor:pointer;font:600 12px/1 'Geist',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#15112A}
+.cr-g::after{content:'';position:absolute;left:14px;right:14px;bottom:12px;height:1px;background:#7B52F0;transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+.cr-g:hover::after{transform:scaleX(1)}
+.cr-sw{display:flex;align-items:center;gap:16px;min-height:56px;padding:6px 0;border-bottom:1px solid rgba(123,82,240,.25)}
+.cr-sw span.t{flex:1;font-size:16px;line-height:1.3}
+.cr-sw button{position:relative;flex:none;width:52px;height:30px;padding:0;border-radius:999px;border:1px solid rgba(123,82,240,.5);background:rgba(255,255,255,.7);cursor:pointer;transition:background .35s,border-color .35s}
+.cr-sw button::before{content:'';position:absolute;inset:-9px -4px}
+.cr-sw button i{position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#7B52F0;box-shadow:0 2px 6px rgba(21,17,42,.25);transition:transform .5s cubic-bezier(.34,1.56,.64,1),background .3s}
+.cr-sw button[aria-checked=true]{background:#F1E4C2;border-color:#7B52F0}
+.cr-sw button[aria-checked=true] i{transform:translateX(22px);background:#15112A}
+.cr-r{appearance:none;-webkit-appearance:none;width:100%;height:48px;margin:0;background:transparent;cursor:pointer;display:block}
+.cr-r::-webkit-slider-runnable-track{height:2px;border-radius:2px;background:linear-gradient(90deg,#7B52F0 var(--p),rgba(123,82,240,.28) var(--p))}
+.cr-r::-moz-range-track{height:2px;border-radius:2px;background:linear-gradient(90deg,#7B52F0 var(--p),rgba(123,82,240,.28) var(--p))}
+.cr-r::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:24px;height:24px;margin-top:-11px;border-radius:50%;background:#FCFBFF;border:1.5px solid #7B52F0;box-shadow:0 4px 12px rgba(21,17,42,.2);transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.cr-r::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#FCFBFF;border:1.5px solid #7B52F0;box-shadow:0 4px 12px rgba(21,17,42,.2)}
+.cr-r:active::-webkit-slider-thumb{transform:scale(1.15)}
+.cr-seg{position:relative;display:grid;grid-template-columns:repeat(3,1fr);border:1px solid rgba(123,82,240,.38);border-radius:16px;background:rgba(255,255,255,.7);overflow:hidden}
+.cr-seg>div{position:absolute;top:0;bottom:0;left:0;width:33.3333%;background:#E9E1FF;border-radius:15px;transition:transform .55s cubic-bezier(.34,1.3,.64,1)}
+.cr-seg button{position:relative;min-height:52px;padding:0 6px;background:none;border:0;cursor:pointer;font:500 15px/1.2 'Geist',sans-serif}
+.cr-file{display:flex;align-items:center;justify-content:center;min-height:72px;border:1px dashed rgba(123,82,240,.6);border-radius:8px;background:rgba(255,255,255,.4);cursor:pointer;font:500 15px/1.3 'Geist',sans-serif;text-align:center;padding:12px;transition:background .3s}
+.cr-file:hover,.cr-file:focus-within{background:#fff}
+@keyframes crInR0{from{opacity:0;transform:translate3d(calc(40px*var(--cr-m,1)),0,0)}to{opacity:1;transform:none}}
+@keyframes crInR1{from{opacity:0;transform:translate3d(calc(40px*var(--cr-m,1)),0,0)}to{opacity:1;transform:none}}
+@keyframes crInL0{from{opacity:0;transform:translate3d(calc(-40px*var(--cr-m,1)),0,0)}to{opacity:1;transform:none}}
+@keyframes crInL1{from{opacity:0;transform:translate3d(calc(-40px*var(--cr-m,1)),0,0)}to{opacity:1;transform:none}}
+@keyframes crOutL{to{opacity:0;transform:translate3d(calc(-40px*var(--cr-m,1)),0,0)}}
+@keyframes crOutR{to{opacity:0;transform:translate3d(calc(40px*var(--cr-m,1)),0,0)}}
+@keyframes crShake{0%,100%{transform:none}20%{transform:translate3d(-7px,0,0)}40%{transform:translate3d(6px,0,0)}60%{transform:translate3d(-4px,0,0)}80%{transform:translate3d(2px,0,0)}}
+@keyframes crShine{0%,70%{transform:translateX(-130%) skewX(-18deg)}100%{transform:translateX(330%) skewX(-18deg)}}
+@keyframes crSpin{to{transform:rotate(360deg)}}
+@keyframes crMid{0%{opacity:0;transform:translate3d(0,6px,0)}12%,80%{opacity:1;transform:none}100%{opacity:0}}
+@keyframes crDrift{0%{transform:translate3d(-4%,-3%,0)}100%{transform:translate3d(5%,4%,0)}}
+@keyframes crDraw{to{stroke-dashoffset:0}}
+@keyframes crPulse{0%{transform:scale(.7);opacity:.6}100%{transform:scale(1.5);opacity:0}}
+.cr-b{background:#6A3DE8;color:#fff;box-shadow:0 12px 30px -12px rgba(106,61,232,.75)}.cr-b:hover{background:#5D31DA}
+.cr-b::before{display:none;content:'';position:absolute;right:14px;top:14px;bottom:14px;width:2px;border-radius:2px;background:linear-gradient(#fff,#B98CFF);box-shadow:0 0 10px 2px rgba(170,110,255,.9)}
+.cr-chp{position:relative;overflow:hidden;flex:0 1 auto;min-height:48px;padding:0 16px;border:0;border-radius:12px;background:rgba(255,255,255,.94);color:#15112A;font:500 13px/1 'Geist',sans-serif;letter-spacing:-.01em;white-space:nowrap;cursor:pointer;transition:background .3s,color .3s,transform .25s,box-shadow .3s}
+.cr-chp:hover:not(:disabled){transform:translateY(-1px)}
+.cr-chp:disabled{background:rgba(255,255,255,.07);color:rgba(237,234,247,.55);cursor:default}
+.cr-chp[aria-current=step]{background:#0E0B18;color:#fff;box-shadow:inset 0 0 0 1px rgba(196,160,255,.5),0 0 26px -4px rgba(150,90,255,.75)}
+.cr-chp[aria-current=step]::after{content:'';position:absolute;right:8px;top:12px;bottom:12px;width:2px;border-radius:2px;background:#D9C8FF;box-shadow:0 0 8px 2px rgba(170,110,255,.95)}
+.cr-chm{visibility:hidden;flex:1}.cr-b{flex:0 0 auto;min-width:0;max-width:100%}
+@media (max-width:880px){.cr-ch{display:none!important}.cr-chm{visibility:visible;display:block;flex:1;min-width:0;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+.cr-orb{position:relative;width:var(--s);height:var(--s);border-radius:50%;background:conic-gradient(from 200deg,#5326F5,#8E5BFF,#D9C2FF,#A673FF,#6234FF,#5326F5);-webkit-mask:radial-gradient(circle closest-side,transparent 50%,#000 53%,#000 97%,transparent 100%);mask:radial-gradient(circle closest-side,transparent 50%,#000 53%,#000 97%,transparent 100%)}
+.cr-orb::before{content:'';position:absolute;inset:0;border-radius:50%;background:radial-gradient(60% 60% at 70% 78%,rgba(40,10,140,.55),transparent 70%)}
+.cr-orb::after{content:'';position:absolute;inset:0;border-radius:50%;background:radial-gradient(34% 26% at 30% 24%,rgba(255,255,255,.9),transparent 70%)}
+@keyframes crWord0{from{opacity:0;filter:blur(calc(10px*var(--cr-m,1)));transform:translate3d(0,calc(.35em*var(--cr-m,1)),0)}to{opacity:1;filter:blur(0);transform:none}}
+@keyframes crWord1{from{opacity:0;filter:blur(calc(10px*var(--cr-m,1)));transform:translate3d(0,calc(.35em*var(--cr-m,1)),0)}to{opacity:1;filter:blur(0);transform:none}}
+@keyframes crCaret0{0%,49%{opacity:1}50%,100%{opacity:0}}
+@keyframes crCaret1{0%,49%{opacity:1}50%,100%{opacity:0}}
+@keyframes crFloat{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-10px,0)}}
+@keyframes crCloud{0%{transform:translate3d(-3%,0,0) scale(1)}100%{transform:translate3d(3%,-4%,0) scale(1.06)}}
+.cr-st{position:relative;width:100%;min-height:48px;display:flex;align-items:center;gap:10px;padding:0 0 6px;background:none;border:0;cursor:pointer;text-align:left;color:#625C78;font:500 14px/1.2 'Geist',sans-serif}
+.cr-st:disabled{cursor:default;opacity:.6}
+.cr-st .n{flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;font:500 12px/1 'Geist Mono',monospace;background:rgba(123,82,240,.1);color:#5A36D6;transition:background .3s,color .3s}
+.cr-st .l{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cr-st[aria-current=step]{color:#15112A}
+.cr-st[aria-current=step] .n,.cr-st.dn .n{background:#6A3DE8;color:#fff}
+.cr-st b{position:absolute;left:0;right:0;bottom:0;height:3px;border-radius:3px;background:rgba(123,82,240,.14);overflow:hidden}
+.cr-st b i{position:absolute;inset:0;background:#6A3DE8;transform-origin:left;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+.cr-lay{display:grid;grid-template-columns:minmax(0,1fr);gap:40px;align-items:start}
+.cr-aside{display:none}
+.cr-ax{display:flex;align-items:center;gap:12px;width:100%;min-height:44px;padding:0 12px;border:0;border-radius:12px;background:none;cursor:pointer;text-align:left;font:400 15px/1.25 'Geist',sans-serif;color:#3A3550;transition:background .25s}
+.cr-ax:hover{background:rgba(123,82,240,.07)}
+.cr-ax .m{font:500 12px/1 'Geist Mono',monospace;color:#5A36D6;width:20px}
+.cr-ax .d{margin-left:auto;width:8px;height:8px;border-radius:50%;border:1px solid rgba(123,82,240,.4);transition:background .3s,border-color .3s}
+.cr-ax.ok .d{background:#6A3DE8;border-color:#6A3DE8}
+@media (min-width:980px){.cr-lay{grid-template-columns:240px minmax(0,1fr);gap:56px}.cr-aside{display:block;position:sticky;top:104px}}
+@media (max-width:560px){.cr-st:not([aria-current=step]) .l{display:none}.cr-sv{display:none}}
+@media (prefers-reduced-motion:reduce){:root{--cr-m:0}*,*::before,*::after{transition-duration:.01ms!important;animation-iteration-count:1!important}.cr-b::after{display:none}}
+</style>
+</helmet>
+<div onKeyDown="{{ onKey }}" style="position:relative;min-height:100dvh;background:#F5F2FC;color:#15112A;font-family:'Geist',system-ui,sans-serif;overflow-x:clip;">
+  <div aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;overflow:hidden">
+    <div style="position:absolute;inset:0;background:radial-gradient(55% 45% at 100% 0%,rgba(196,170,255,.45),transparent 70%),radial-gradient(50% 45% at 0% 100%,rgba(255,196,236,.4),transparent 70%)"></div>
+    <div style="position:absolute;left:-15%;right:-15%;bottom:-30%;height:55%;background:radial-gradient(40% 60% at 30% 50%,rgba(176,140,255,.3),transparent 70%),radial-gradient(35% 55% at 75% 60%,rgba(240,170,240,.26),transparent 70%);filter:blur(40px);animation:crDrift 26s ease-in-out infinite alternate"></div>
+    <div ref="{{ glowRef }}" style="position:absolute;left:15%;top:-20%;width:70vmax;height:70vmax;background:radial-gradient(closest-side,rgba(160,130,255,.16),transparent);will-change:transform"></div>
+  </div>
+  <input type="text" name="site_web" tabindex="-1" autocomplete="off" aria-hidden="true" onChange="{{ onHp }}" style="position:absolute;left:-9999px;top:0;width:1px;height:1px;opacity:0">
+  <header style="position:sticky;top:0;z-index:6;background:rgba(245,242,252,.8);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(123,82,240,.12)">
+    <div style="width:min(100%,1120px);margin:0 auto;box-sizing:border-box;padding:0 clamp(16px,4vw,32px);min-height:68px;display:flex;align-items:center;gap:clamp(16px,4vw,48px)">
+      <span style="flex:none;display:flex;align-items:center;gap:8px;font:500 18px/1 'Geist',sans-serif;letter-spacing:-.03em"><span aria-hidden="true" style="width:11px;height:11px;border-radius:50%;background:conic-gradient(#6A3DE8,#D98BFF,#6A3DE8)"></span>Crée</span>
+      <sc-if value="{{ isForm }}" hint-placeholder-val="{{ false }}">
+        <ol aria-label="Étapes" style="flex:1;max-width:620px;margin:0 0 0 auto;padding:0;list-style:none;display:flex;gap:clamp(8px,2vw,20px)">
+          <sc-for list="{{ stepper }}" as="p" hint-placeholder-count="3">
+            <li style="flex:{{ p.flex }};min-width:0"><button type="button" class="cr-st {{ p.cls }}" aria-current="{{ p.cur }}" disabled="{{ p.dis }}" onClick="{{ p.onClick }}"><span class="n">{{ p.num }}</span><span class="l">{{ p.label }}</span><b><i style="transform:scaleX({{ p.fill }})"></i></b></button></li>
+          </sc-for>
+        </ol>
+      </sc-if>
+    </div>
+  </header>
+
+  <main style="position:relative;width:min(100%,1120px);margin:0 auto;box-sizing:border-box;padding:clamp(28px,5vw,56px) clamp(16px,4vw,32px) 150px">
+    <div style="animation:{{ exitAnim }}">
+
+      <sc-if value="{{ isWelcome }}" hint-placeholder-val="{{ true }}">
+        <div style="max-width:720px;margin:clamp(0px,4vh,48px) auto 0;text-align:center">
+          <div style="display:flex;justify-content:center;margin-bottom:40px;animation:{{ an0 }}"><div style="position:relative;animation:crFloat 7s ease-in-out infinite"><div aria-hidden="true" style="position:absolute;inset:-45%;border-radius:50%;background:radial-gradient(closest-side,rgba(140,90,255,.28),transparent)"></div><div class="cr-orb" style="--s:clamp(96px,22vw,140px)"></div></div></div>
+          <p class="cr-lb" style="margin:0 0 20px;animation:{{ an1 }}">Invitation sur mesure</p>
+          <h1 id="cr-title" tabindex="-1" aria-label="{{ titleText }}" style="margin:0 auto;max-width:12em;font-family:'Geist',sans-serif;font-weight:400;font-size:clamp(2.6rem,8.5vw,4.8rem);line-height:1;letter-spacing:-.05em;text-wrap:balance"><sc-for list="{{ words }}" as="w" hint-placeholder-count="0"><span aria-hidden="true" style="display:inline-block;white-space:pre;animation:{{ w.anim }}">{{ w.t }}</span></sc-for><span aria-hidden="true" style="display:inline-block;width:.06em;min-width:2px;height:.85em;margin-left:.04em;vertical-align:-.06em;border-radius:2px;background:#7B52F0;animation:{{ caretAnim }}"></span></h1>
+          <p style="margin:24px auto 0;max-width:30em;font-size:clamp(17px,2.2vw,19px);line-height:1.6;color:#625C78;text-wrap:pretty;animation:{{ an2 }}">{{ cfg.welcome.promise }}</p>
+          <ol style="margin:40px auto 0;padding:8px;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;text-align:left;background:rgba(255,255,255,.7);border:1px solid rgba(123,82,240,.14);border-radius:20px;animation:{{ an3 }}">
+            <sc-for list="{{ preview }}" as="p" hint-placeholder-count="3">
+              <li style="display:flex;gap:12px;align-items:flex-start;padding:14px"><span style="flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:rgba(123,82,240,.1);color:#5A36D6;font:500 12px/1 'Geist Mono',monospace">{{ p.num }}</span><span style="display:grid;gap:4px"><span style="font-size:16px;font-weight:500">{{ p.label }}</span><span style="font-size:14px;color:#625C78;line-height:1.4">{{ p.sub }}</span></span></li>
+            </sc-for>
+          </ol>
+          <p style="margin:20px 0 0;font-size:14px;color:#625C78;animation:{{ an4 }}">{{ cfg.welcome.duration }} · {{ cfg.welcome.note }}</p>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isForm }}" hint-placeholder-val="{{ false }}">
+        <div class="cr-lay">
+          <aside class="cr-aside" aria-label="Sections de l'étape">
+            <p class="cr-lb" style="margin:0 0 14px 12px">{{ counter }}</p>
+            <nav style="display:grid;gap:2px">
+              <sc-for list="{{ secs }}" as="sec" hint-placeholder-count="3"><button type="button" class="cr-ax {{ sec.okCls }}" onClick="{{ sec.jump }}"><span class="m">{{ sec.num }}</span><span>{{ sec.title }}</span><span class="d"></span></button></sc-for>
+            </nav>
+          </aside>
+          <div style="min-width:0">
+            <div style="max-width:640px;margin-bottom:clamp(28px,4vw,40px)">
+              <p class="cr-lb" style="margin:0 0 14px;animation:{{ an0 }}">{{ counter }}</p>
+              <h1 id="cr-title" tabindex="-1" aria-label="{{ titleText }}" style="margin:0;font-family:'Geist',sans-serif;font-weight:400;font-size:clamp(2.1rem,5.6vw,3.4rem);line-height:1.04;letter-spacing:-.045em;text-wrap:balance"><sc-for list="{{ words }}" as="w" hint-placeholder-count="0"><span aria-hidden="true" style="display:inline-block;white-space:pre;animation:{{ w.anim }}">{{ w.t }}</span></sc-for><span aria-hidden="true" style="display:inline-block;width:.06em;min-width:2px;height:.85em;margin-left:.04em;vertical-align:-.06em;border-radius:2px;background:#7B52F0;animation:{{ caretAnim }}"></span></h1>
+              <p style="margin:14px 0 0;font-size:17px;line-height:1.5;color:#625C78;animation:{{ an1 }}">{{ sub }}</p>
+            </div>
+            <div style="display:grid;gap:20px">
+              <sc-for list="{{ secs }}" as="sec" hint-placeholder-count="3">
+                <section id="s-{{ sec.id }}" aria-labelledby="h-{{ sec.id }}" style="scroll-margin-top:96px;background:rgba(255,255,255,.86);border:1px solid rgba(123,82,240,.12);border-radius:24px;padding:clamp(20px,4vw,36px);box-shadow:0 24px 60px -44px rgba(80,40,180,.45);animation:{{ sec.anim }}">
+                  <div style="display:flex;gap:14px;align-items:baseline;margin-bottom:26px">
+                    <span style="font:500 13px/1 'Geist Mono',monospace;color:#5A36D6">{{ sec.num }}</span>
+                    <div style="display:grid;gap:6px"><h2 id="h-{{ sec.id }}" style="margin:0;font-size:22px;font-weight:500;letter-spacing:-.02em;line-height:1.2">{{ sec.title }}</h2><p style="margin:0;font-size:15px;color:#625C78;line-height:1.45">{{ sec.sub }}</p></div>
+                  </div>
+                  <div style="display:grid;gap:28px">
+                    <sc-for list="{{ sec.blocks }}" as="b" hint-placeholder-count="3">
+            <div id="b-{{ b.id }}" style="animation:{{ b.anim }}">
+              <div style="animation:{{ b.shake }}">
+
+                <sc-if value="{{ b.isText }}" hint-placeholder-val="{{ false }}">
+                  <div class="cr-f {{ b.cls }}">
+                    <input id="f-{{ b.id }}" type="{{ b.type }}" placeholder=" " value="{{ b.value }}" onChange="{{ b.onChange }}" onBlur="{{ b.onBlur }}" autoComplete="{{ b.auto }}" aria-required="{{ b.req }}" aria-invalid="{{ b.bad }}" aria-describedby="e-{{ b.id }}">
+                    <label for="f-{{ b.id }}">{{ b.label }}</label><i></i><b></b><span class="cr-t">{{ b.optTxt }}</span>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ b.isArea }}" hint-placeholder-val="{{ false }}">
+                  <div class="cr-f {{ b.cls }}">
+                    <textarea id="f-{{ b.id }}" placeholder=" " value="{{ b.value }}" onChange="{{ b.onChange }}" onBlur="{{ b.onBlur }}" aria-describedby="e-{{ b.id }}"></textarea>
+                    <label for="f-{{ b.id }}">{{ b.label }}</label><i></i><span class="cr-t">{{ b.optTxt }}</span>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ b.isGroup }}" hint-placeholder-val="{{ false }}">
+                  <div role="group" aria-labelledby="lb-{{ b.id }}">
+                    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:14px">
+                      <span id="lb-{{ b.id }}" class="cr-lb">{{ b.label }}</span><span class="cr-o2">{{ b.optTxt }}</span>
+                    </div>
+
+                    <sc-if value="{{ b.isChoice }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:{{ b.layout }};grid-template-columns:repeat(auto-fill,minmax(150px,1fr));flex-wrap:wrap;gap:10px">
+                        <sc-for list="{{ b.options }}" as="o" hint-placeholder-count="4">
+                          <button type="button" id="o-{{ b.id }}-{{ o.i }}" class="cr-c {{ b.pill }}" aria-pressed="{{ o.on }}" onClick="{{ o.onClick }}">
+                            <sc-if value="{{ o.hasColors }}" hint-placeholder-val="{{ false }}">
+                              <span aria-hidden="true" style="display:flex;flex:none">
+                                <sc-for list="{{ o.colors }}" as="k" hint-placeholder-count="2"><span style="width:18px;height:18px;border-radius:50%;margin-right:-5px;border:1px solid rgba(21,17,42,.2);background:{{ k.c }}"></span></sc-for>
+                              </span>
+                            </sc-if>
+                            <span>{{ o.label }}</span>
+                            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="#5A36D6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                          </button>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+
+                    <sc-if value="{{ b.isRange }}" hint-placeholder-val="{{ false }}">
+                      <div style="position:relative;height:38px">
+                        <output style="position:absolute;bottom:0;left:calc(12px + (100% - 24px) * {{ b.frac }});transform:translateX(-50%);white-space:nowrap;font-family:'Geist',sans-serif;font-size:30px;font-weight:400;transition:left .55s cubic-bezier(.34,1.56,.64,1)">{{ b.shown }}</output>
+                      </div>
+                      <input class="cr-r" type="range" min="{{ b.min }}" max="{{ b.max }}" step="{{ b.step }}" value="{{ b.value }}" onChange="{{ b.onChange }}" aria-labelledby="lb-{{ b.id }}" aria-valuetext="{{ b.shown }}" style="--p:{{ b.pct }}">
+                      <div aria-hidden="true" style="margin:0 12px;height:6px;background:repeating-linear-gradient(90deg,rgba(123,82,240,.55) 0 1px,transparent 1px 10%);border-right:1px solid rgba(123,82,240,.55)"></div>
+                      <div aria-hidden="true" style="display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:#625C78"><span>{{ b.minLabel }}</span><span>{{ b.maxLabel }}</span></div>
+                    </sc-if>
+
+                    <sc-if value="{{ b.isScale }}" hint-placeholder-val="{{ false }}">
+                      <div class="cr-seg">
+                        <div style="transform:translateX({{ b.indPos }})"></div>
+                        <sc-for list="{{ b.options }}" as="o" hint-placeholder-count="3">
+                          <button type="button" id="o-{{ b.id }}-{{ o.i }}" aria-pressed="{{ o.on }}" onClick="{{ o.onClick }}">{{ o.label }}</button>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+
+                    <sc-if value="{{ b.isToggles }}" hint-placeholder-val="{{ false }}">
+                      <div>
+                        <sc-for list="{{ b.options }}" as="o" hint-placeholder-count="5">
+                          <div class="cr-sw"><span class="t" id="t-{{ b.id }}-{{ o.i }}">{{ o.label }}</span><button type="button" role="switch" id="o-{{ b.id }}-{{ o.i }}" aria-checked="{{ o.on }}" aria-labelledby="t-{{ b.id }}-{{ o.i }}" onClick="{{ o.onClick }}"><i></i></button></div>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+
+                    <sc-if value="{{ b.isLoc }}" hint-placeholder-val="{{ false }}">
+                      <div>
+                        <sc-for list="{{ b.rows }}" as="r" hint-placeholder-count="1">
+                          <div class="cr-e {{ r.cls }}"><div>
+                            <div style="display:flex;align-items:center;gap:6px;padding-bottom:12px">
+                              <div class="cr-f {{ r.fcls }}" style="flex:1;min-width:0">
+                                <input id="loc-{{ r.id }}" type="text" placeholder=" " value="{{ r.v }}" onChange="{{ r.onChange }}" autoComplete="off">
+                                <label for="loc-{{ r.id }}">{{ r.label }}</label><i></i><b></b>
+                              </div>
+                              <sc-if value="{{ r.canRemove }}" hint-placeholder-val="{{ false }}"><button type="button" class="cr-g" style="padding:0 8px" onClick="{{ r.onRemove }}" aria-label="Retirer {{ r.label }}">Retirer</button></sc-if>
+                            </div>
+                          </div></div>
+                        </sc-for>
+                        <button type="button" class="cr-g" style="padding-left:0" onClick="{{ b.onAdd }}">+ &nbsp;Ajouter un lieu</button>
+                      </div>
+                    </sc-if>
+
+                    <sc-if value="{{ b.isFile }}" hint-placeholder-val="{{ false }}">
+                      <div>
+                        <label class="cr-file"><input type="file" multiple="multiple" onChange="{{ b.onFiles }}" style="position:absolute;width:1px;height:1px;opacity:0"><span>Choisir des fichiers</span></label>
+                        <sc-for list="{{ b.files }}" as="f" hint-placeholder-count="0">
+                          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(123,82,240,.25);min-height:48px;font-size:15px"><span style="overflow-wrap:anywhere">{{ f.name }}</span><button type="button" class="cr-g" onClick="{{ f.onRemove }}" aria-label="Retirer {{ f.name }}">Retirer</button></div>
+                        </sc-for>
+                        <p style="margin:10px 0 0;font-size:14px;color:#625C78">{{ b.hint }}</p>
+                      </div>
+                    </sc-if>
+                  </div>
+                </sc-if>
+
+                <div class="cr-e {{ b.eo }}" id="e-{{ b.id }}" aria-live="polite"><div><p>{{ b.err }}</p></div></div>
+              </div>
+            </div>
+          </sc-for>
+                  </div>
+                </section>
+              </sc-for>
+
+              <sc-if value="{{ showRecap }}" hint-placeholder-val="{{ false }}">
+                <section aria-labelledby="h-recap" style="background:rgba(255,255,255,.6);border:1px dashed rgba(123,82,240,.35);border-radius:24px;padding:clamp(20px,4vw,36px)">
+                  <div style="display:grid;gap:6px;margin-bottom:18px"><h2 id="h-recap" style="margin:0;font-size:22px;font-weight:500;letter-spacing:-.02em">Avant l'envoi</h2><p style="margin:0;font-size:15px;color:#625C78">Relisez vos réponses. Tout reste modifiable.</p></div>
+                  <sc-for list="{{ recap }}" as="g" hint-placeholder-count="3">
+                    <div style="border-top:1px solid rgba(123,82,240,.14);padding:14px 0">
+                      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px"><h3 style="margin:0;font-size:16px;font-weight:500">{{ g.title }}</h3><button type="button" class="cr-g" onClick="{{ g.edit }}" aria-label="Modifier : {{ g.title }}">Modifier</button></div>
+                      <dl style="margin:4px 0 0;display:grid;gap:8px">
+                        <sc-for list="{{ g.rows }}" as="r" hint-placeholder-count="2"><div style="display:grid;grid-template-columns:minmax(110px,.45fr) 1fr;gap:16px;align-items:baseline"><dt style="font-size:14px;color:#625C78">{{ r.k }}</dt><dd style="margin:0;font-size:15px;line-height:1.5;overflow-wrap:anywhere;white-space:pre-line">{{ r.v }}</dd></div></sc-for>
+                      </dl>
+                    </div>
+                  </sc-for>
+                  <div class="cr-e {{ failedCls }}" role="alert"><div><p style="margin-top:12px;font-size:15px">Votre message n'a pas pu être envoyé. Vos réponses sont conservées sur cet appareil. Vérifiez votre connexion, puis réessayez.</p></div></div>
+                </section>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
+        <div style="max-width:640px;margin:clamp(0px,6vh,64px) auto 0;text-align:center">
+          <div style="display:flex;justify-content:center;margin-bottom:40px;animation:{{ an0 }}">
+            <div style="position:relative;width:150px;height:150px;animation:crFloat 7s ease-in-out infinite">
+              <div aria-hidden="true" style="position:absolute;inset:-45%;border-radius:50%;background:radial-gradient(closest-side,rgba(140,90,255,.3),transparent)"></div>
+              <div aria-hidden="true" style="position:absolute;inset:0;border-radius:50%;border:1px solid rgba(123,82,240,.6);animation:crPulse 2.4s .9s ease-out 2 both"></div>
+              <div class="cr-orb" style="--s:150px"></div>
+              <svg viewBox="0 0 96 96" width="52" height="52" aria-hidden="true" style="position:absolute;left:49px;top:49px"><path d="M24 50l15 15 33-34" fill="none" stroke="#5A36D6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="80" stroke-dashoffset="80" style="animation:crDraw .7s .7s cubic-bezier(.2,.7,.2,1) forwards"></path></svg>
+            </div>
+          </div>
+          <h1 id="cr-title" tabindex="-1" aria-label="{{ titleText }}" style="margin:0;font-family:'Geist',sans-serif;font-weight:400;font-size:clamp(2.6rem,8vw,4.4rem);line-height:1.02;letter-spacing:-.05em"><sc-for list="{{ words }}" as="w" hint-placeholder-count="0"><span aria-hidden="true" style="display:inline-block;white-space:pre;animation:{{ w.anim }}">{{ w.t }}</span></sc-for><span aria-hidden="true" style="display:inline-block;width:.06em;min-width:2px;height:.85em;margin-left:.04em;vertical-align:-.06em;border-radius:2px;background:#7B52F0;animation:{{ caretAnim }}"></span></h1>
+          <p style="margin:22px auto 0;max-width:28em;font-size:18px;line-height:1.6;color:#625C78;animation:{{ an2 }}">{{ cfg.done.message }}</p>
+          <p style="display:inline-block;margin:28px 0 0;padding:9px 16px;border-radius:999px;background:rgba(123,82,240,.1);font-size:14px;font-weight:500;color:#5A36D6;animation:{{ an3 }}">{{ cfg.done.delay }}</p>
+        </div>
+      </sc-if>
+    </div>
+  </main>
+
+  <sc-if value="{{ showBar }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;left:0;right:0;bottom:0;z-index:6;background:rgba(255,255,255,.8);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid rgba(123,82,240,.12);padding:12px clamp(16px,4vw,32px) calc(12px + env(safe-area-inset-bottom))">
+      <div style="width:min(100%,1120px);margin:0 auto;display:flex;align-items:center;gap:12px">
+        <sc-if value="{{ showPrev }}" hint-placeholder-val="{{ false }}"><button type="button" class="cr-g" onClick="{{ prev }}" style="padding-left:0;flex:none">Précédent</button></sc-if>
+        <span class="cr-sv" style="flex:1;min-width:0;text-align:center;font-size:13px;color:#625C78">{{ saveNote }}</span>
+        <button type="button" class="cr-b" onClick="{{ next }}" aria-busy="{{ sending }}" style="margin:{{ btnMargin }}">
+          <sc-if value="{{ showLabel }}" hint-placeholder-val="{{ true }}"><span>{{ nextLabel }}</span></sc-if>
+          <sc-if value="{{ sending }}" hint-placeholder-val="{{ false }}"><span class="cr-sp" role="status" aria-label="Envoi en cours"></span></sc-if>
+          <sc-if value="{{ sendOk }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 20 20" width="22" height="22" aria-label="Envoyé"><path d="M4 10.5l4 4 8-9" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="22" stroke-dashoffset="22" style="animation:crDraw .5s ease forwards"></path></svg></sc-if>
+        </button>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  // URL du service qui reçoit les réponses (ex. Google Apps Script publié en application web).
+  // Laisser vide : l'envoi est simulé et les réponses restent dans le navigateur.
+  ENDPOINT = '';
+  KEY = 'cree:v4';
+
+  // ===== Textes et questions : modifiables sans toucher à la logique =====
+  // kind: text | area | choice | range | scale | toggles | locations | file
+  // choice: style 'cards' | 'chips', multi, options (texte ou {label, colors}); showIf: {id, has}
+  cfg = {
+    welcome: { title: 'Votre invitation, à votre image.', promise: "Répondez à quelques questions. Nous concevons l'application d'invitation de votre événement, pensée pour vos invités et pour vous.", duration: 'Durée estimée : 4 minutes', note: 'Vos réponses sont enregistrées au fur et à mesure.' },
+    done: { message: 'Votre demande nous est bien parvenue. Nous la lisons avec attention et revenons vers vous avec une première proposition.', delay: 'Réponse sous 48 heures' },
+    steps: [
+      { id: 'welcome' },
+      { id: 'you', title: "Vous et l'événement", sub: 'Quelques mots pour faire connaissance.', blocks: [
+        { id: 'nom', kind: 'text', label: 'Prénom et nom', auto: 'name', req: true, err: 'Indiquez votre prénom et votre nom.' },
+        { id: 'email', kind: 'text', type: 'email', label: 'Adresse e-mail', auto: 'email', req: true, vt: 'email', err: 'Indiquez votre adresse e-mail.' },
+        { id: 'tel', kind: 'text', type: 'tel', label: 'Téléphone', auto: 'tel', vt: 'tel' },
+        { id: 'type', kind: 'choice', style: 'cards', label: "Quel est le type d'événement ?", req: true, err: 'Choisissez un type d\'événement.', options: ['Mariage', 'Anniversaire', 'Baptême', 'Autre'] },
+        { id: 'type_autre', kind: 'text', label: "Précisez l'événement", req: true, err: 'Précisez votre choix.', showIf: { id: 'type', has: 'Autre' } },
+        { id: 'date', kind: 'text', type: 'date', label: 'Date prévue' },
+        { id: 'invites', kind: 'range', label: "Combien d'invités environ ?", min: 10, max: 500, step: 10, def: 100, unit: 'invités', minLabel: '10', maxLabel: '500 et plus' } ] },
+      { id: 'lieux', title: 'Les lieux', sub: 'Où se déroulera votre événement ?', blocks: [
+        { id: 'lieux', kind: 'locations', label: 'Un ou plusieurs lieux', place: 'Nom ou ville du lieu' },
+        { id: 'langues', kind: 'choice', style: 'chips', multi: true, label: 'Dans quelle(s) langue(s) sera le site ?', req: true, err: 'Choisissez au moins une langue.', options: ['Français', 'Anglais', 'Espagnol', 'Arabe', 'Allemand', 'Italien', 'Portugais', 'Autre'] },
+        { id: 'langues_autre', kind: 'text', label: 'Autre(s) langue(s)', req: true, err: 'Précisez la langue.', showIf: { id: 'langues', has: 'Autre' } } ] },
+      { id: 'contenu', title: 'Le contenu', sub: 'Que souhaitez-vous présenter à vos invités ?', blocks: [
+        { id: 'rubriques', kind: 'choice', style: 'cards', multi: true, label: 'Rubriques souhaitées', req: true, err: 'Choisissez au moins une rubrique.', options: ['Programme', 'Lieu et itinéraire', 'Dress code', 'Hébergement', 'Liste de cadeaux', 'Contacts', 'Galerie photos et vidéos', 'Menu', 'Autre'] },
+        { id: 'rubriques_autre', kind: 'text', label: 'Autre rubrique', req: true, err: 'Précisez la rubrique.', showIf: { id: 'rubriques', has: 'Autre' } },
+        { id: 'deroule', kind: 'area', label: 'Déroulé de la journée' } ] },
+      { id: 'reponses', title: 'La réponse des invités', sub: 'Comment souhaitez-vous recevoir leurs réponses ?', blocks: [
+        { id: 'infos', kind: 'choice', style: 'cards', multi: true, label: 'Informations à recueillir', options: ['Présence', 'Nombre de personnes', 'Régime alimentaire', 'Choix de menu', 'Message'] },
+        { id: 'destination', kind: 'choice', style: 'chips', label: 'Où recevoir les réponses ?', req: true, err: 'Choisissez une destination.', options: ['Tableur', 'E-mail', 'Autre'] },
+        { id: 'destination_autre', kind: 'text', label: 'Précisez la destination', req: true, err: 'Précisez votre choix.', showIf: { id: 'destination', has: 'Autre' } },
+        { id: 'limite', kind: 'text', type: 'date', label: 'Date limite de réponse' },
+        { id: 'modifiable', kind: 'choice', style: 'chips', label: 'Une réponse peut-elle être changée ?', options: ['Réponse unique', 'Réponse modifiable'] } ] },
+      { id: 'style', title: 'Le style visuel', sub: "Dites-nous quelle atmosphère vous inspire.", blocks: [
+        { id: 'ambiance', kind: 'choice', style: 'cards', label: 'Ambiance', req: true, err: 'Choisissez une ambiance.', options: [
+          { label: 'Classique', colors: ['#EFE6D2', '#15112A'] }, { label: 'Romantique', colors: ['#F2D9D6', '#B9857F'] }, { label: 'Moderne', colors: ['#F2F0EC', '#2B2B2B'] },
+          { label: 'Champêtre', colors: ['#DCE3CC', '#7C8B5E'] }, { label: 'Luxueuse', colors: ['#D9BC72', '#2A1119'] }, { label: 'Autre', colors: [] }] },
+        { id: 'ambiance_autre', kind: 'text', label: "Décrivez l'ambiance", req: true, err: 'Précisez votre choix.', showIf: { id: 'ambiance', has: 'Autre' } },
+        { id: 'palette', kind: 'choice', style: 'cards', label: 'Palette préférée', options: [
+          { label: 'Ivoire et or', colors: ['#F6EEDC', '#C9A24F'] }, { label: 'Rose poudré', colors: ['#EFCFCB', '#9C5B5F'] }, { label: 'Vert sauge', colors: ['#C9D3B8', '#5F6F4A'] },
+          { label: 'Bleu nuit', colors: ['#1F2A44', '#D9BC72'] }, { label: 'Terracotta', colors: ['#C8785A', '#F1DCC8'] }] },
+        { id: 'palette_txt', kind: 'text', label: 'Ou décrivez votre palette' },
+        { id: 'eviter', kind: 'text', label: 'Couleurs à éviter' },
+        { id: 'fichiers', kind: 'file', label: 'Logo, faire-part, photos', hint: 'Les noms des fichiers nous sont transmis. Nous vous écrirons pour les recevoir.' },
+        { id: 'refs', kind: 'area', label: 'Deux ou trois références appréciées' },
+        { id: 'deteste', kind: 'text', label: 'Une chose que vous détestez' } ] },
+      { id: 'experience', title: "L'expérience", sub: 'Comment vos invités découvriront votre invitation.', blocks: [
+        { id: 'ouverture', kind: 'choice', style: 'cards', label: 'Ouverture animée', options: ['Enveloppe', 'Rideau', 'Cachet de cire', 'Aucune'] },
+        { id: 'musique', kind: 'text', label: 'Musique de fond (titre ou style)' },
+        { id: 'animation', kind: 'scale', label: "Niveau d'animation", def: 1, options: ['Discret', 'Modéré', 'Spectaculaire'] },
+        { id: 'fonctions', kind: 'toggles', label: 'Fonctions souhaitées', options: ["Installation sur l'écran d'accueil", 'Ajout au calendrier', 'Rappels par notification', 'Compte à rebours', 'Hashtag dédié'] } ] },
+      { id: 'enligne', title: 'La mise en ligne', sub: 'Les dernières précisions.', blocks: [
+        { id: 'domaine', kind: 'text', label: 'Nom de domaine souhaité' },
+        { id: 'editeur', kind: 'choice', style: 'chips', label: 'Qui modifiera le contenu ?', options: ['Moi seul(e)', 'Plusieurs personnes', "Votre équipe, pour moi"] },
+        { id: 'aisance', kind: 'choice', style: 'chips', label: 'Votre aisance avec le numérique', options: ['Débutant', "À l'aise", 'Très à l\'aise'] },
+        { id: 'acces', kind: 'choice', style: 'chips', label: 'Qui peut voir le site ?', options: ['Accès libre', 'Lien privé'] },
+        { id: 'miseenligne', kind: 'text', type: 'date', label: 'Date de mise en ligne souhaitée' },
+        { id: 'budget', kind: 'choice', style: 'chips', label: 'Budget approximatif', options: ['Moins de 300 000 FCFA', '300 000 à 650 000 FCFA', '650 000 à 1 300 000 FCFA', 'Plus de 1 300 000 FCFA', 'Je ne sais pas encore'] },
+        { id: 'demande', kind: 'area', label: 'Une demande particulière' } ] },
+      { id: 'recap', title: 'Récapitulatif', sub: 'Relisez vos réponses avant de les envoyer.' },
+      { id: 'done' }
+    ]
+  };
+
+  // 3 étapes, chacune découpée en sections (ids des questions de cfg.steps)
+  layout = [
+    { g: 'Votre événement', t: 'Parlons de votre événement', s: 'Vos coordonnées, la date et les lieux.', d: 'Coordonnées, date, invités, lieux.', secs: [
+      { t: 'Vos coordonnées', s: 'Pour vous recontacter.', b: ['nom', 'email', 'tel'] },
+      { t: "L'événement", s: "Le type, la date et le nombre d'invités.", b: ['type', 'type_autre', 'date', 'invites'] },
+      { t: 'Lieux et langues', s: 'Où se déroule la fête, et pour qui.', b: ['lieux', 'langues', 'langues_autre'] }] },
+    { g: 'Votre site', t: 'Imaginons votre site', s: 'Le contenu, les réponses des invités et le style.', d: 'Contenu, réponses, style.', secs: [
+      { t: 'Contenu', s: 'Ce que vos invités pourront consulter.', b: ['rubriques', 'rubriques_autre', 'deroule'] },
+      { t: 'Réponses des invités', s: 'Ce que vous leur demandez, et où le recevoir.', b: ['infos', 'destination', 'destination_autre', 'limite', 'modifiable'] },
+      { t: 'Style visuel', s: "L'atmosphère et les couleurs.", b: ['ambiance', 'ambiance_autre', 'palette', 'palette_txt', 'eviter'] },
+      { t: 'Inspirations', s: 'Tout est facultatif ici.', b: ['fichiers', 'refs', 'deteste'] }] },
+    { g: 'Finaliser', t: 'Les dernières précisions', s: "L'expérience, la mise en ligne, puis l'envoi.", d: 'Expérience, mise en ligne, envoi.', secs: [
+      { t: 'Expérience', s: 'Le premier geste et les fonctions.', b: ['ouverture', 'animation', 'musique', 'fonctions'] },
+      { t: 'Mise en ligne', s: 'Adresse, date, visibilité et gestion.', b: ['domaine', 'miseenligne', 'acces', 'editeur', 'aisance'] },
+      { t: 'Budget et demande', s: 'Pour vous faire une proposition juste.', b: ['budget', 'demande'] }] }
+  ];
+  screens = (() => {
+    const all = {}; this.cfg.steps.forEach(x => (x.blocks || []).forEach(b => { all[b.id] = b; }));
+    return [{ id: 'welcome' }, ...this.layout.map((l, k) => {
+      const secs = l.secs.map((x, j) => ({ id: k + '-' + j, title: x.t, sub: x.s, blocks: x.b.map(i => all[i]) }));
+      return { id: 'e' + k, group: l.g, title: l.t, sub: l.s, desc: l.d, secs, blocks: secs.flatMap(x => x.blocks) };
+    }), { id: 'done' }];
+  })();
+  glow = React.createRef();
+  state = this.loadState();
+
+  loadState() {
+    const base = { maxStep: 0, step: 0, dir: 1, leaving: false, data: {}, locs: [{ id: 1, v: '', open: true }], touched: {}, shake: '', sending: false, sendOk: false, failed: false, uid: 2 };
+    try {
+      const j = JSON.parse(localStorage.getItem(this.KEY) || 'null');
+      if (j) {
+        base.step = Math.min(j.step || 0, this.screens.length - 2);
+        base.data = j.data || {}; base.maxStep = Math.max(base.step, j.maxStep || 0);
+        if (j.locs && j.locs.length) { base.locs = j.locs.map(l => ({ ...l, open: true })); base.uid = Math.max(...j.locs.map(l => l.id)) + 1; }
+      }
+    } catch (e) {}
+    return base;
+  }
+
+  componentDidMount() {
+    this.rm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.t = { x: 0, y: 0 }; this.c = { x: 0, y: 0 };
+    if (this.rm) return;
+    this.mv = e => { this.t.x = e.clientX / innerWidth - .5; this.t.y = e.clientY / innerHeight - .5; };
+    this.or = e => { if (e.gamma != null) { this.t.x = Math.max(-.5, Math.min(.5, e.gamma / 60)); this.t.y = Math.max(-.5, Math.min(.5, (e.beta - 45) / 90)); } };
+    addEventListener('pointermove', this.mv); addEventListener('deviceorientation', this.or);
+    const loop = () => {
+      this.c.x += (this.t.x - this.c.x) * .04; this.c.y += (this.t.y - this.c.y) * .04;
+      const g = this.glow.current; if (g) g.style.transform = `translate3d(${this.c.x * 160}px,${this.c.y * 160}px,0)`;
+      this.raf = requestAnimationFrame(loop);
+    };
+    loop();
+  }
+  componentWillUnmount() { cancelAnimationFrame(this.raf); removeEventListener('pointermove', this.mv); removeEventListener('deviceorientation', this.or); }
+  componentDidUpdate(pp, ps) {
+    const s = this.state;
+    if (!s.sendOk && (ps.data !== s.data || ps.step !== s.step || ps.locs !== s.locs)) {
+      try { localStorage.setItem(this.KEY, JSON.stringify({ step: s.step, maxStep: s.maxStep, data: s.data, locs: s.locs.map(l => ({ id: l.id, v: l.v })) })); } catch (e) {}
+    }
+  }
+
+  // ---- données ----
+  val(b) {
+    const v = this.state.data[b.id];
+    if (b.kind === 'range') return v == null ? b.def : v;
+    if (b.kind === 'scale') return v == null ? b.def : v;
+    if (b.kind === 'choice' || b.kind === 'toggles') return v == null ? (b.multi || b.kind === 'toggles' ? [] : '') : v;
+    return v == null ? '' : v;
+  }
+  set(id, v) { this.setState(s => ({ data: { ...s.data, [id]: v } })); }
+  touch(id) { if (!this.state.touched[id]) this.setState(s => ({ touched: { ...s.touched, [id]: true } })); }
+  visible(step) {
+    return (step.blocks || []).filter(b => !b.showIf || (() => { const v = this.state.data[b.showIf.id]; return Array.isArray(v) ? v.includes(b.showIf.has) : v === b.showIf.has; })());
+  }
+  msg(b) {
+    if (b.kind === 'locations') return '';
+    const v = this.state.data[b.id];
+    const empty = v == null || v === '' || (Array.isArray(v) && !v.length) || (typeof v === 'string' && !v.trim());
+    if (empty) return b.req ? (b.err || 'Ce champ est nécessaire.') : '';
+    if (b.vt === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return 'Cette adresse e-mail semble incomplète.';
+    if (b.vt === 'tel' && !/^\+?[\d\s().-]{6,}$/.test(v)) return 'Ce numéro semble incomplet.';
+    return '';
+  }
+  firstBad(step) { return this.visible(step).find(b => this.msg(b)); }
+  buzz() { try { navigator.vibrate && navigator.vibrate(8); } catch (e) {} }
+  fmtDate(v) { try { return new Date(v + 'T00:00:00').toLocaleDateString('fr-FR', { dateStyle: 'long' }); } catch (e) { return v; } }
+
+  // ---- navigation ----
+  go(n) {
+    if (this.state.leaving) return;
+    this.setState({ leaving: true, dir: n > this.state.step ? 1 : -1 });
+    setTimeout(() => {
+      this.setState(p => ({ step: n, leaving: false, shake: '', maxStep: Math.max(p.maxStep || 0, n) }));
+      window.scrollTo(0, 0);
+      setTimeout(() => { const f = matchMedia('(pointer:fine)').matches && document.querySelector('main input[type=text],main input[type=email],main input[type=tel],main textarea'); const t = f || document.getElementById('cr-title'); t && t.focus({ preventScroll: true }); }, 80);
+    }, this.rm ? 10 : 220);
+  }
+  complain(b) {
+    const t = {}; this.visible(this.screens[this.state.step]).forEach(x => { t[x.id] = true; });
+    this.setState(s => ({ touched: { ...s.touched, ...t }, shake: b.id }));
+    setTimeout(() => this.setState({ shake: '' }), 650);
+    const el = document.getElementById('f-' + b.id) || document.getElementById('o-' + b.id + '-0');
+    if (el) { window.scrollTo({ top: Math.max(0, el.getBoundingClientRect().top + scrollY - 160), behavior: this.rm ? 'auto' : 'smooth' }); setTimeout(() => el.focus({ preventScroll: true }), 120); }
+  }
+  next = () => {
+    const s = this.state; if (s.leaving || s.sending) return;
+    if (s.step === 0) return this.go(1);
+    if (s.step === this.screens.length - 2) return this.submit();
+    const bad = this.firstBad(this.screens[s.step]);
+    if (bad) return this.complain(bad);
+    this.go(s.step + 1);
+  };
+  goSec(i, id) {
+    this.go(i);
+    setTimeout(() => { const el = document.getElementById('s-' + id); el && window.scrollTo({ top: el.getBoundingClientRect().top + scrollY - 90 }); }, this.rm ? 120 : 420);
+  }
+  prev = () => { if (this.state.step > 0) this.go(this.state.step - 1); };
+  onKey = e => {
+    if (e.key !== 'Enter') return;
+    const t = e.target, tag = t.tagName;
+    if (tag === 'TEXTAREA' || tag === 'BUTTON' || tag === 'A' || t.type === 'file') return;
+    e.preventDefault(); this.next();
+  };
+
+  // ---- envoi ----
+  payload() {
+    const o = { envoye_le: new Date().toISOString(), page: location.href };
+    this.screens.forEach(st => this.visible(st).forEach(b => {
+      if (b.kind === 'locations') o.lieux = this.state.locs.map(l => l.v.trim()).filter(Boolean);
+      else if (b.kind === 'file') o.fichiers = (this.state.data.fichiers || []).map(f => f.name);
+      else o[b.id] = this.val(b);
+    }));
+    return o;
+  }
+  async submit() {
+    if (this.state.sending) return;
+    if (this.hp) { this.setState({ step: this.screens.length - 1 }); return; }
+    for (let i = 1; i <= this.screens.length - 2; i++) { const bad = this.firstBad(this.screens[i]); if (bad) { this.setState({ touched: { ...this.state.touched, [bad.id]: true } }); this.go(i); return; } }
+    this.setState({ sending: true, failed: false });
+    const body = this.payload();
+    try {
+      if (this.ENDPOINT) {
+        // text/plain évite la requête préliminaire CORS (compatible Google Apps Script)
+        const r = await fetch(this.ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) });
+        if (!r.ok) throw new Error('http ' + r.status);
+      } else await new Promise(r => setTimeout(r, 1100));
+      this.setState({ sending: false, sendOk: true });
+      try { localStorage.removeItem(this.KEY); localStorage.removeItem('cree:backup'); } catch (e) {}
+      setTimeout(() => this.go(this.screens.length - 1), 800);
+    } catch (e) {
+      try { localStorage.setItem('cree:backup', JSON.stringify(body)); } catch (x) {}
+      this.setState({ sending: false, failed: true });
+    }
+  }
+
+  // ---- lieux ----
+  addLoc = () => {
+    const s = this.state; if (s.locs.length >= 5) return;
+    const id = s.uid;
+    this.setState({ locs: [...s.locs, { id, v: '', open: false }], uid: id + 1 });
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      this.setState(p => ({ locs: p.locs.map(l => l.id === id ? { ...l, open: true } : l) }));
+      setTimeout(() => { const el = document.getElementById('loc-' + id); el && el.focus({ preventScroll: true }); }, 200);
+    }));
+  };
+  rmLoc(id) {
+    if (this.state.locs.length < 2) return;
+    this.setState(p => ({ locs: p.locs.map(l => l.id === id ? { ...l, open: false } : l) }));
+    setTimeout(() => this.setState(p => ({ locs: p.locs.filter(l => l.id !== id) })), this.rm ? 10 : 400);
+  }
+
+  recapValue(b) {
+    const v = this.val(b);
+    if (b.kind === 'locations') return this.state.locs.map(l => l.v.trim()).filter(Boolean).join('\n');
+    if (b.kind === 'file') return (this.state.data.fichiers || []).map(f => f.name).join('\n');
+    if (b.kind === 'range') return '≈ ' + v + ' ' + b.unit;
+    if (b.kind === 'scale') return b.options[v];
+    if (Array.isArray(v)) return v.join(', ');
+    if (b.type === 'date' && v) return this.fmtDate(v);
+    return v;
+  }
+
+  renderVals() {
+    const s = this.state, c = this.cfg, st = this.screens[s.step], N = this.screens.length, RC = N - 2, fwd = s.dir > 0, par = s.step % 2;
+    const inN = (fwd ? 'crInR' : 'crInL') + par;
+    const an = i => `${inN} 560ms cubic-bezier(.2,.7,.2,1) ${i * 40}ms both`;
+    const isForm = !!st.blocks, isRecap = false;
+    const first = (this.state.data.nom || '').trim().split(/\s+/)[0];
+
+    const vmB = (b, i) => {
+      const v = this.val(b), m = this.msg(b), show = !!s.touched[b.id] && !!m;
+      const o = { id: b.id, label: b.label, req: !!b.req, optTxt: b.req ? '' : 'facultatif', anim: an(i + 2), shake: s.shake === b.id ? 'crShake .5s ease' : 'none', err: m, eo: show ? 'o' : '', bad: show };
+      o.isText = b.kind === 'text'; o.isArea = b.kind === 'area';
+      o.isGroup = !(o.isText || o.isArea);
+      if (o.isText || o.isArea) {
+        o.type = b.type || 'text'; o.auto = b.auto || 'off'; o.value = v;
+        o.cls = (o.type === 'date' ? 'up ' : '') + (show ? 'bad ' : '') + (v !== '' && !m ? 'ok' : '');
+        o.onChange = e => this.set(b.id, e.target.value);
+        o.onBlur = () => this.touch(b.id);
+      }
+      if (b.kind === 'choice') {
+        o.isChoice = true; o.pill = b.style === 'chips' ? 'pill' : 'card'; o.layout = b.style === 'chips' ? 'flex' : 'grid';
+        o.options = b.options.map((x, k) => {
+          const lab = typeof x === 'string' ? x : x.label, cols = (x.colors || []).map(cc => ({ c: cc }));
+          const on = b.multi ? v.includes(lab) : v === lab;
+          return { i: k, label: lab, on, colors: cols, hasColors: cols.length > 0, onClick: () => {
+            this.buzz(); this.touch(b.id);
+            if (b.multi) this.set(b.id, on ? v.filter(y => y !== lab) : [...v, lab]); else this.set(b.id, on ? '' : lab);
+          } };
+        });
+      }
+      if (b.kind === 'range') {
+        o.isRange = true; o.min = b.min; o.max = b.max; o.step = b.step; o.value = v;
+        const f = (v - b.min) / (b.max - b.min); o.frac = f; o.pct = (f * 100) + '%';
+        o.shown = '≈ ' + v + ' ' + b.unit; o.minLabel = b.minLabel; o.maxLabel = b.maxLabel;
+        o.onChange = e => this.set(b.id, Number(e.target.value));
+      }
+      if (b.kind === 'scale') {
+        o.isScale = true; o.indPos = (v * 100) + '%';
+        o.options = b.options.map((lab, k) => ({ i: k, label: lab, on: v === k, onClick: () => { this.buzz(); this.set(b.id, k); } }));
+      }
+      if (b.kind === 'toggles') {
+        o.isToggles = true;
+        o.options = b.options.map((lab, k) => { const on = v.includes(lab); return { i: k, label: lab, on, onClick: () => { this.buzz(); this.set(b.id, on ? v.filter(y => y !== lab) : [...v, lab]); } }; });
+      }
+      if (b.kind === 'locations') {
+        o.isLoc = true; o.onAdd = this.addLoc;
+        o.rows = s.locs.map((l, k) => ({ id: l.id, v: l.v, cls: l.open ? 'o' : '', fcls: l.v.trim() ? 'ok' : '', label: s.locs.length > 1 ? `${b.place} ${k + 1}` : b.place, canRemove: s.locs.length > 1,
+          onChange: e => { const t = e.target.value; this.setState(p => ({ locs: p.locs.map(x => x.id === l.id ? { ...x, v: t } : x) })); }, onRemove: () => this.rmLoc(l.id) }));
+      }
+      if (b.kind === 'file') {
+        o.isFile = true; o.hint = b.hint;
+        const fl = s.data.fichiers || [];
+        o.files = fl.map((f, k) => ({ name: f.name, onRemove: () => this.set('fichiers', fl.filter((_, j) => j !== k)) }));
+        o.onFiles = e => { const add = Array.from(e.target.files).map(f => ({ name: f.name, size: f.size })); this.set('fichiers', [...fl, ...add]); };
+      }
+      return o;
+    };
+    const vis = isForm ? this.visible(st) : [];
+    let gi = 0;
+    const secs = isForm ? st.secs.map((x, j) => {
+      const bl = vis.filter(b => x.blocks.includes(b)).map(b => vmB(b, Math.min(gi++, 6)));
+      const vb = vis.filter(b => x.blocks.includes(b));
+      const ok = vb.every(b => !this.msg(b)) && vb.some(b => { const v = s.data[b.id]; return v != null && v !== '' && !(Array.isArray(v) && !v.length); });
+      return { id: x.id, num: String(j + 1).padStart(2, '0'), title: x.title, sub: x.sub, blocks: bl, anim: an(j + 2), okCls: ok ? 'ok' : '',
+        jump: () => { const el = document.getElementById('s-' + x.id); el && window.scrollTo({ top: el.getBoundingClientRect().top + scrollY - 90, behavior: this.rm ? 'auto' : 'smooth' }); } };
+    }) : [];
+    const recap = [];
+    this.screens.forEach((x, i) => (x.secs || []).forEach(sc => recap.push({ title: sc.title, edit: () => this.goSec(i, sc.id),
+      rows: this.visible(x).filter(b => sc.blocks.includes(b)).map(b => ({ k: b.label, v: this.recapValue(b) || '—' })) })));
+    const fillOf = x => { const vb = this.visible(x); if (!vb.length) return 0; return vb.filter(b => { const v = s.data[b.id]; return v != null && v !== '' && !(Array.isArray(v) && !v.length); }).length / vb.length; };
+    const stepper = this.screens.slice(1, -1).map((x, k) => { const i = k + 1, cur = i === s.step;
+      return { num: String(i), label: x.group, cur: cur ? 'step' : 'false', dis: i > (s.maxStep || 0), cls: i < s.step ? 'dn' : '', flex: cur ? '1.6' : '1',
+        fill: i < s.step ? 1 : cur ? Math.max(.06, fillOf(x)) : 0, onClick: () => this.go(i) }; });
+
+
+    const n = s.step, formStep = n >= 1 && n <= RC;
+    const titleText = n === 0 ? c.welcome.title : n === N - 1 ? (first ? `Merci, ${first}.` : 'Merci.') : (st.title || '');
+    const words = titleText.split(' ').map((w, i, a) => ({ t: i < a.length - 1 ? w + ' ' : w, anim: `crWord${par} 720ms cubic-bezier(.2,.7,.2,1) ${80 + i * 55}ms both` }));
+    return {
+      cfg: c, state: s,
+      glowRef: this.glow,
+      onKey: this.onKey, onHp: e => { this.hp = e.target.value; },
+      isWelcome: n === 0, isForm, isRecap, isDone: n === N - 1, hasHead: isForm || isRecap,
+      title: st.title, sub: st.sub,
+      an0: an(0), an1: an(1), an2: an(2), an3: an(3), an4: an(4),
+      titleText, words, caretAnim: `crCaret${par} .9s steps(1) ${words.length * 55 + 200}ms 4 both`,
+      groupLabel: isRecap ? 'Récapitulatif' : (st.group || ''),
+      showChapters: formStep,
+      secs, recap, stepper, showRecap: n === RC, preview: this.screens.slice(1, -1).map((x, k) => ({ num: String(k + 1), label: x.group, sub: x.desc })), saveNote: 'Vos réponses sont enregistrées automatiquement.',
+      clipR: (100 - (n >= N - 1 ? 1 : n / RC) * 100) + '%',
+      exitAnim: s.leaving ? `${fwd ? 'crOutL' : 'crOutR'} 220ms ease-in both` : 'none',
+      showHeader: formStep, counter: `Étape ${n} sur ${RC}`, counterAria: `Étape ${n} sur ${RC}`,
+      progress: n >= N - 1 ? 1 : n / RC, progressPct: ((n >= N - 1 ? 1 : n / RC) * 100) + '%',
+      showMid: n === Math.floor(RC / 2),
+      showBar: n <= RC, showPrev: n > 0,
+      btnMargin: n === 0 ? '0 auto' : '0 0 0 auto',
+      nextLabel: n === 0 ? 'Commencer' : n === RC ? (s.failed ? 'Réessayer' : 'Envoyer ma demande') : 'Continuer',
+      showLabel: !s.sending && !s.sendOk, sending: s.sending, sendOk: s.sendOk,
+      failedCls: s.failed ? 'o' : '',
+      next: this.next, prev: this.prev,
+      doneTitle: first ? `Merci, ${first}.` : 'Merci.'
+    };
+  }
+}
+</script>
+</body>
+</html>

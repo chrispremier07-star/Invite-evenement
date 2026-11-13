@@ -1,0 +1,67 @@
+import { DeleteObjectCommand, GetObjectCommand, HeadObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { createPresignedPost } from '@aws-sdk/s3-presigned-post';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import type { Env } from '../env';
+
+export interface Storage {
+  presignUpload(
+    key: string,
+    contentType: string,
+    maxBytes: number,
+  ): Promise<{ url: string; fields: Record<string, string> }>;
+  head(key: string): Promise<{ size: number; contentType: string | undefined } | null>;
+  signedGetUrl(key: string, filename: string): Promise<string>;
+  remove(key: string): Promise<void>;
+  /** Origine du stockage, pour la politique de sécurité du contenu (CSP). */
+  origin: string;
+}
+
+export function createStorage(env: Env): Storage {
+  const client = new S3Client({
+    region: env.S3_REGION,
+    endpoint: env.S3_ENDPOINT,
+    forcePathStyle: env.S3_FORCE_PATH_STYLE,
+    credentials: { accessKeyId: env.S3_ACCESS_KEY_ID, secretAccessKey: env.S3_SECRET_ACCESS_KEY },
+    // Évite d'ajouter des en-têtes de somme de contrôle que les formulaires POST des navigateurs ne peuvent pas fournir.
+    requestChecksumCalculation: 'WHEN_REQUIRED',
+    responseChecksumValidation: 'WHEN_REQUIRED',
+  });
+  return {
+    origin: new URL(env.S3_ENDPOINT).origin,
+    async presignUpload(key, contentType, maxBytes) {
+      return createPresignedPost(client, {
+        Bucket: env.S3_BUCKET,
+        Key: key,
+        Conditions: [
+          ['content-length-range', 1, maxBytes],
+          ['eq', '$Content-Type', contentType],
+        ],
+        Fields: { 'Content-Type': contentType },
+        Expires: 600,
+      });
+    },
+    async head(key) {
+      try {
+        const r = await client.send(new HeadObjectCommand({ Bucket: env.S3_BUCKET, Key: key }));
+        return { size: r.ContentLength ?? 0, contentType: r.ContentType };
+      } catch {
+        return null;
+      }
+    },
+    signedGetUrl(key, filename) {
+      const safe = filename.replace(/[^\w.\- ()]/g, '_');
+      return getSignedUrl(
+        client,
+        new GetObjectCommand({
+          Bucket: env.S3_BUCKET,
+          Key: key,
+          ResponseContentDisposition: `attachment; filename="${safe}"`,
+        }),
+        { expiresIn: 300 },
+      );
+    },
+    async remove(key) {
+      await client.send(new DeleteObjectCommand({ Bucket: env.S3_BUCKET, Key: key }));
+    },
+  };
+}

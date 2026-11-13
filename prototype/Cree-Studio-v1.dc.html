@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F5F2FC">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Crée Studio">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;background:#F5F2FC;-webkit-text-size-adjust:100%}
+*{-webkit-tap-highlight-color:transparent;box-sizing:border-box}
+a{color:#5A36D6}a:hover{color:#15112A}
+button,input,textarea{font-family:'Geist',system-ui,sans-serif;color:#15112A}
+button:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid #6A3DE8;outline-offset:2px}
+.st-lb{font:500 12px/1.3 'Geist Mono',ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:#5A36D6}
+.st-app{display:grid;grid-template-columns:minmax(0,1fr);min-height:100dvh}
+.st-side{display:none}
+.st-tabs{position:fixed;left:0;right:0;bottom:0;z-index:8;display:grid;grid-template-columns:repeat(3,1fr);background:rgba(255,255,255,.86);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid rgba(123,82,240,.12);padding-bottom:env(safe-area-inset-bottom)}
+.st-tab{position:relative;min-height:58px;border:0;background:none;cursor:pointer;font:500 13px/1 'Geist',sans-serif;color:#625C78;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.st-tab[aria-current=page]{color:#15112A}
+.st-tab[aria-current=page]::before{content:'';position:absolute;top:0;left:30%;right:30%;height:2px;border-radius:2px;background:#6A3DE8}
+.st-nav{display:flex;align-items:center;gap:12px;width:100%;min-height:44px;padding:0 12px;border:0;border-radius:12px;background:none;cursor:pointer;text-align:left;font:450 15px/1 'Geist',sans-serif;color:#3A3550;transition:background .2s}
+.st-nav:hover{background:rgba(123,82,240,.07)}
+.st-nav[aria-current=page]{background:#fff;color:#15112A;box-shadow:0 1px 0 rgba(123,82,240,.1),0 8px 24px -16px rgba(80,40,180,.4)}
+.st-badge{margin-left:auto;min-width:22px;height:22px;padding:0 7px;border-radius:999px;display:inline-grid;place-items:center;background:#6A3DE8;color:#fff;font:500 12px/1 'Geist Mono',monospace}
+.st-tab .st-badge{position:absolute;top:6px;left:calc(50% + 14px);margin:0;min-width:18px;height:18px;font-size:11px;padding:0 5px}
+.st-btn{position:relative;white-space:nowrap;flex:none;min-height:44px;padding:0 18px;border:0;border-radius:999px;background:#6A3DE8;color:#fff;font:500 14px/1 'Geist',sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 10px 24px -12px rgba(106,61,232,.8);transition:transform .2s,background .2s;text-decoration:none}
+.st-btn:hover{background:#5D31DA;color:#fff}.st-btn:active{transform:scale(.97)}
+.st-btn:disabled{opacity:.45;cursor:default;box-shadow:none}
+.st-gh{white-space:nowrap;flex:none;min-height:44px;padding:0 16px;border-radius:999px;border:1px solid rgba(123,82,240,.22);background:rgba(255,255,255,.8);color:#15112A;font:500 14px/1 'Geist',sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;transition:background .2s,border-color .2s}
+.st-gh:hover{background:#fff;border-color:rgba(123,82,240,.45);color:#15112A}
+.st-chip{min-height:36px;padding:0 14px;border-radius:999px;border:1px solid rgba(123,82,240,.18);background:rgba(255,255,255,.7);font:500 13px/1 'Geist',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px;white-space:nowrap;transition:background .2s,border-color .2s}
+.st-chip[aria-pressed=true]{background:#15112A;border-color:#15112A;color:#fff}
+.st-chip .c{font:500 11px/1 'Geist Mono',monospace;opacity:.7}
+.st-in{width:100%;min-height:48px;padding:0 16px;border-radius:14px;border:1px solid rgba(123,82,240,.2);background:#fff;font:400 16px/1.3 'Geist',sans-serif;outline:none;transition:box-shadow .25s,border-color .25s}
+.st-in:focus{border-color:#7B52F0;box-shadow:0 0 0 4px rgba(123,82,240,.12)}
+textarea.st-in{min-height:110px;padding:14px 16px;resize:vertical;line-height:1.5}
+.st-row{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:14px;border:0;border-radius:16px;background:none;cursor:pointer;text-align:left;transition:background .2s,box-shadow .2s}
+.st-row:hover{background:rgba(255,255,255,.7)}
+.st-row[aria-current=true]{background:#fff;box-shadow:0 0 0 1px rgba(123,82,240,.18),0 12px 30px -18px rgba(80,40,180,.45)}
+.st-card{background:rgba(255,255,255,.88);border:1px solid rgba(123,82,240,.12);border-radius:22px;padding:clamp(18px,3vw,28px);box-shadow:0 24px 60px -46px rgba(80,40,180,.5)}
+.st-split{display:grid;grid-template-columns:minmax(0,1fr)}
+.st-list,.st-detail{min-width:0}
+@media (max-width:959px){.st-split[data-d=true] .st-list{display:none}.st-split[data-d=false] .st-detail{display:none}.st-main{padding-bottom:96px}}
+@media (min-width:960px){
+  .st-app{grid-template-columns:248px minmax(0,1fr)}
+  .st-side{display:flex;flex-direction:column;gap:6px;position:sticky;top:0;height:100dvh;padding:22px 14px;border-right:1px solid rgba(123,82,240,.1);background:rgba(255,255,255,.4)}
+  .st-tabs,.st-back,.st-mtop{display:none!important}
+  .st-split{grid-template-columns:minmax(320px,390px) minmax(0,1fr);height:100dvh}
+  .st-list{overflow:auto;border-right:1px solid rgba(123,82,240,.1)}
+  .st-detail{overflow:auto}
+}
+@keyframes stToast{from{opacity:0;transform:translate3d(0,-12px,0) scale(.98)}to{opacity:1;transform:none}}
+@keyframes stIn{from{opacity:0;transform:translate3d(0,10px,0)}to{opacity:1;transform:none}}
+@keyframes stSpin{to{transform:rotate(360deg)}}
+@keyframes stPulse{0%{box-shadow:0 0 0 0 rgba(106,61,232,.5)}100%{box-shadow:0 0 0 10px rgba(106,61,232,0)}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:1ms!important;animation-iteration-count:1!important;transition-duration:1ms!important}}
+</style>
+</helmet>
+<div style="position:relative;min-height:100dvh;background:#F5F2FC;color:#15112A;font-family:'Geist',system-ui,sans-serif;overflow-x:clip">
+  <div aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;background:radial-gradient(50% 40% at 100% 0%,rgba(196,170,255,.4),transparent 70%),radial-gradient(45% 40% at 0% 100%,rgba(255,196,236,.32),transparent 70%)"></div>
+
+  <div class="st-app" style="position:relative">
+    <aside class="st-side" aria-label="Navigation">
+      <div style="display:flex;align-items:center;gap:10px;padding:4px 12px 22px">
+        <span aria-hidden="true" style="width:12px;height:12px;border-radius:50%;background:conic-gradient(#6A3DE8,#D98BFF,#6A3DE8)"></span>
+        <span style="font:500 19px/1 'Geist',sans-serif;letter-spacing:-.03em">Crée Studio</span>
+      </div>
+      <sc-for list="{{ nav }}" as="n" hint-placeholder-count="3">
+        <button type="button" class="st-nav" aria-current="{{ n.cur }}" onClick="{{ n.onClick }}"><span>{{ n.label }}</span><sc-if value="{{ n.hasCount }}" hint-placeholder-val="{{ false }}"><span class="st-badge">{{ n.count }}</span></sc-if></button>
+      </sc-for>
+      <div style="margin-top:auto;display:grid;gap:10px;padding:12px">
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#625C78"><span style="width:8px;height:8px;border-radius:50%;background:{{ syncDot }}"></span>{{ syncText }}</div>
+        <sc-if value="{{ canInstall }}" hint-placeholder-val="{{ false }}"><button type="button" class="st-gh" onClick="{{ onInstall }}">Installer l'application</button></sc-if>
+      </div>
+    </aside>
+
+    <main class="st-main" style="min-width:0">
+      <div class="st-mtop" style="position:sticky;top:0;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:60px;padding:0 16px;background:rgba(245,242,252,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(123,82,240,.1)">
+        <span style="display:flex;align-items:center;gap:8px;font:500 17px/1 'Geist',sans-serif;letter-spacing:-.03em"><span aria-hidden="true" style="width:10px;height:10px;border-radius:50%;background:conic-gradient(#6A3DE8,#D98BFF,#6A3DE8)"></span>Crée Studio</span>
+        <button type="button" class="st-gh" style="min-height:40px;padding:0 14px;font-size:13px" onClick="{{ onSync }}">{{ syncBtn }}</button>
+      </div>
+
+      <sc-if value="{{ isInbox }}" hint-placeholder-val="{{ true }}">
+        <div class="st-split" data-d="{{ mobileDetail }}">
+          <section class="st-list" aria-label="Demandes" style="padding:clamp(16px,3vw,24px) clamp(12px,2vw,16px)">
+            <div style="padding:0 4px">
+              <h1 style="margin:0;font-size:30px;font-weight:450;letter-spacing:-.04em">Demandes</h1>
+              <p style="margin:6px 0 16px;font-size:14px;color:#625C78">{{ inboxSub }}</p>
+              <label for="st-q" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Rechercher</label>
+              <input id="st-q" class="st-in" type="search" placeholder="Rechercher un nom, un lieu, un type…" value="{{ q }}" onChange="{{ onQ }}">
+              <div style="display:flex;gap:6px;overflow-x:auto;padding:12px 0 14px;margin:0 -4px;padding-left:4px;scrollbar-width:none" role="group" aria-label="Filtrer par statut">
+                <sc-for list="{{ filters }}" as="f" hint-placeholder-count="6"><button type="button" class="st-chip" aria-pressed="{{ f.on }}" onClick="{{ f.onClick }}"><sc-if value="{{ f.hasDot }}" hint-placeholder-val="{{ false }}"><span style="width:7px;height:7px;border-radius:50%;background:{{ f.color }}"></span></sc-if>{{ f.label }}<span class="c">{{ f.count }}</span></button></sc-for>
+              </div>
+            </div>
+            <div style="display:grid;gap:4px">
+              <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+                <button type="button" class="st-row" aria-current="{{ r.cur }}" onClick="{{ r.onClick }}" style="animation:stIn .4s {{ r.delay }} both">
+                  <span style="grid-row:span 2;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:{{ r.avBg }};font:500 14px/1 'Geist',sans-serif;color:#15112A;position:relative">{{ r.initials }}<sc-if value="{{ r.unread }}" hint-placeholder-val="{{ false }}"><span aria-label="Non lue" style="position:absolute;top:0;right:0;width:11px;height:11px;border-radius:50%;background:#6A3DE8;border:2px solid #F5F2FC;animation:stPulse 1.8s ease-out 3"></span></sc-if></span>
+                  <span style="min-width:0;font-size:15px;font-weight:{{ r.weight }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.name }}</span>
+                  <span style="font:400 12px/1 'Geist Mono',monospace;color:#625C78;white-space:nowrap">{{ r.when }}</span>
+                  <span style="min-width:0;font-size:13px;color:#625C78;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.meta }}</span>
+                  <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#3A3550;white-space:nowrap"><span style="width:7px;height:7px;border-radius:50%;background:{{ r.color }}"></span>{{ r.status }}</span>
+                </button>
+              </sc-for>
+              <sc-if value="{{ noRows }}" hint-placeholder-val="{{ false }}"><p style="padding:32px 12px;text-align:center;color:#625C78;font-size:15px">Aucune demande ne correspond.</p></sc-if>
+            </div>
+          </section>
+
+          <section class="st-detail" aria-label="Détail de la demande" style="padding:clamp(16px,3vw,32px)">
+            <sc-if value="{{ hasSel }}" hint-placeholder-val="{{ false }}">
+              <div style="max-width:880px;margin:0 auto;display:grid;gap:16px;animation:stIn .45s both" data-key="{{ sel.id }}">
+                <button type="button" class="st-gh st-back" style="justify-self:start" onClick="{{ onBack }}">← Demandes</button>
+                <div class="st-card" style="display:grid;gap:18px">
+                  <div style="display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:14px">
+                    <div style="min-width:0">
+                      <p class="st-lb" style="margin:0 0 10px">{{ sel.received }}</p>
+                      <h2 style="margin:0;font-size:clamp(26px,4vw,36px);font-weight:450;letter-spacing:-.04em;line-height:1.05">{{ sel.name }}</h2>
+                      <p style="margin:10px 0 0;font-size:16px;color:#3A3550">{{ sel.meta }}</p>
+                    </div>
+                    <span style="display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:{{ sel.statusBg }};font-size:13px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:{{ sel.statusColor }}"></span>{{ sel.status }}</span>
+                  </div>
+                  <div style="display:flex;flex-wrap:wrap;gap:8px">
+                    <a class="st-btn" href="{{ sel.mailto }}">Répondre par e-mail</a>
+                    <sc-if value="{{ sel.hasTel }}" hint-placeholder-val="{{ false }}"><a class="st-gh" href="{{ sel.telHref }}">Appeler</a><a class="st-gh" href="{{ sel.waHref }}" target="_blank" rel="noopener">WhatsApp</a></sc-if>
+                    <button type="button" class="st-gh" onClick="{{ sel.onCopy }}">{{ sel.copyLabel }}</button>
+                    <button type="button" class="st-gh" onClick="{{ sel.onExport }}">Exporter</button>
+                  </div>
+                  <div style="border-top:1px solid rgba(123,82,240,.12);padding-top:16px">
+                    <p class="st-lb" style="margin:0 0 10px">Statut</p>
+                    <div style="display:flex;flex-wrap:wrap;gap:6px" role="group" aria-label="Changer le statut">
+                      <sc-for list="{{ sel.statuses }}" as="s" hint-placeholder-count="5"><button type="button" class="st-chip" aria-pressed="{{ s.on }}" onClick="{{ s.onClick }}"><span style="width:7px;height:7px;border-radius:50%;background:{{ s.color }}"></span>{{ s.label }}</button></sc-for>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="st-card">
+                  <label for="st-notes" class="st-lb" style="display:block;margin-bottom:10px">Notes internes</label>
+                  <textarea id="st-notes" class="st-in" placeholder="Premier appel, idées, points à vérifier…" value="{{ sel.notes }}" onChange="{{ sel.onNotes }}"></textarea>
+                  <p style="margin:8px 0 0;font-size:13px;color:#625C78">Visibles par vous seul, enregistrées sur cet appareil.</p>
+                </div>
+
+                <sc-for list="{{ sel.sections }}" as="sec" hint-placeholder-count="4">
+                  <div class="st-card">
+                    <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:16px"><span style="font:500 13px/1 'Geist Mono',monospace;color:#5A36D6">{{ sec.num }}</span><h3 style="margin:0;font-size:20px;font-weight:500;letter-spacing:-.02em">{{ sec.title }}</h3></div>
+                    <dl style="margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:16px 24px">
+                      <sc-for list="{{ sec.rows }}" as="r" hint-placeholder-count="4">
+                        <div style="min-width:0;grid-column:{{ r.span }}">
+                          <dt style="font-size:13px;color:#625C78;margin-bottom:5px">{{ r.k }}</dt>
+                          <dd style="margin:0;font-size:15px;line-height:1.5;overflow-wrap:anywhere;white-space:pre-line;color:{{ r.color }}">
+                            <sc-if value="{{ r.hasSw }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;vertical-align:-3px;margin-right:8px"><sc-for list="{{ r.sw }}" as="c" hint-placeholder-count="2"><span style="width:16px;height:16px;border-radius:50%;margin-right:-4px;border:1px solid rgba(21,17,42,.15);background:{{ c.c }}"></span></sc-for></span></sc-if>{{ r.v }}
+                          </dd>
+                        </div>
+                      </sc-for>
+                    </dl>
+                  </div>
+                </sc-for>
+                <div style="display:flex;justify-content:flex-end;gap:8px;padding-bottom:12px">
+                  <button type="button" class="st-gh" onClick="{{ sel.onDelete }}" style="color:#9B1C3F">Supprimer la demande</button>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ noSel }}" hint-placeholder-val="{{ true }}">
+              <div style="height:100%;min-height:50vh;display:grid;place-items:center;text-align:center;color:#625C78">
+                <div><div aria-hidden="true" style="width:72px;height:72px;margin:0 auto 18px;border-radius:50%;border:14px solid rgba(123,82,240,.18)"></div><p style="margin:0;font-size:16px">Sélectionnez une demande pour la consulter.</p></div>
+              </div>
+            </sc-if>
+          </section>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isStats }}" hint-placeholder-val="{{ false }}">
+        <div style="max-width:1080px;margin:0 auto;padding:clamp(16px,3vw,36px);display:grid;gap:16px">
+          <div><h1 style="margin:0;font-size:30px;font-weight:450;letter-spacing:-.04em">Vue d'ensemble</h1><p style="margin:6px 0 0;font-size:14px;color:#625C78">{{ statsSub }}</p></div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px">
+            <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+              <div class="st-card" style="display:grid;gap:10px;animation:stIn .45s {{ k.delay }} both"><span style="font-size:14px;color:#625C78">{{ k.label }}</span><span style="font-size:clamp(28px,4vw,38px);font-weight:450;letter-spacing:-.04em;line-height:1">{{ k.value }}</span><span style="font-size:13px;color:#625C78">{{ k.hint }}</span></div>
+            </sc-for>
+          </div>
+          <div class="st-card">
+            <h2 style="margin:0 0 16px;font-size:18px;font-weight:500">Suivi des demandes</h2>
+            <div style="display:flex;height:14px;border-radius:999px;overflow:hidden;background:rgba(123,82,240,.08);gap:2px">
+              <sc-for list="{{ pipeline }}" as="p" hint-placeholder-count="5"><div title="{{ p.label }}" style="width:{{ p.pct }};background:{{ p.color }};transition:width .6s"></div></sc-for>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:14px">
+              <sc-for list="{{ pipeline }}" as="p" hint-placeholder-count="5"><span style="display:inline-flex;align-items:center;gap:8px;font-size:14px"><span style="width:8px;height:8px;border-radius:50%;background:{{ p.color }}"></span>{{ p.label }}<span style="font-family:'Geist Mono',monospace;color:#625C78">{{ p.count }}</span></span></sc-for>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px">
+            <sc-for list="{{ dists }}" as="d" hint-placeholder-count="2">
+              <div class="st-card">
+                <h2 style="margin:0 0 16px;font-size:18px;font-weight:500">{{ d.title }}</h2>
+                <div style="display:grid;gap:12px">
+                  <sc-for list="{{ d.items }}" as="i" hint-placeholder-count="4">
+                    <div style="display:grid;gap:6px"><div style="display:flex;justify-content:space-between;font-size:14px"><span>{{ i.label }}</span><span style="font-family:'Geist Mono',monospace;color:#625C78">{{ i.count }}</span></div><div style="height:6px;border-radius:6px;background:rgba(123,82,240,.1);overflow:hidden"><div style="height:100%;width:{{ i.pct }};border-radius:6px;background:#7B52F0;transition:width .6s"></div></div></div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <div class="st-card">
+            <h2 style="margin:0 0 6px;font-size:18px;font-weight:500">Événements à venir</h2>
+            <sc-for list="{{ upcoming }}" as="u" hint-placeholder-count="4">
+              <button type="button" class="st-row" style="grid-template-columns:64px minmax(0,1fr) auto;border-top:1px solid rgba(123,82,240,.1);border-radius:0" onClick="{{ u.onClick }}">
+                <span style="grid-row:span 2;text-align:center;line-height:1"><span style="display:block;font-size:24px;font-weight:450;letter-spacing:-.03em">{{ u.day }}</span><span class="st-lb" style="font-size:11px">{{ u.month }}</span></span>
+                <span style="font-size:15px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ u.name }}</span>
+                <span style="font:400 12px/1 'Geist Mono',monospace;color:#625C78">{{ u.inDays }}</span>
+                <span style="font-size:13px;color:#625C78;grid-column:2 / 4">{{ u.meta }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
+        <div style="max-width:760px;margin:0 auto;padding:clamp(16px,3vw,36px);display:grid;gap:16px">
+          <div><h1 style="margin:0;font-size:30px;font-weight:450;letter-spacing:-.04em">Réglages</h1><p style="margin:6px 0 0;font-size:14px;color:#625C78">Notifications, application et source des demandes.</p></div>
+
+          <div class="st-card" style="display:grid;gap:14px">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><h2 style="margin:0;font-size:18px;font-weight:500">Notifications</h2><span style="display:inline-flex;align-items:center;gap:8px;font-size:13px"><span style="width:8px;height:8px;border-radius:50%;background:{{ notifDot }}"></span>{{ notifLabel }}</span></div>
+            <p style="margin:0;font-size:15px;line-height:1.5;color:#3A3550">Recevez une alerte dès qu'une nouvelle demande arrive, même lorsque l'application est en arrière-plan.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-if value="{{ notifAsk }}" hint-placeholder-val="{{ true }}"><button type="button" class="st-btn" onClick="{{ onNotifEnable }}">Activer les notifications</button></sc-if>
+              <button type="button" class="st-gh" onClick="{{ onNotifTest }}">Envoyer une notification test</button>
+            </div>
+            <sc-if value="{{ notifBlocked }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font-size:14px;color:#9B1C3F">Les notifications sont bloquées par le navigateur. Autorisez-les dans les réglages du site.</p></sc-if>
+          </div>
+
+          <div class="st-card" style="display:grid;gap:14px">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><h2 style="margin:0;font-size:18px;font-weight:500">Application</h2><span style="display:inline-flex;align-items:center;gap:8px;font-size:13px"><span style="width:8px;height:8px;border-radius:50%;background:{{ installDot }}"></span>{{ installLabel }}</span></div>
+            <p style="margin:0;font-size:15px;line-height:1.5;color:#3A3550">Installez Crée Studio sur votre téléphone ou votre ordinateur pour l'ouvrir comme une application, même hors ligne.</p>
+            <sc-if value="{{ canInstall }}" hint-placeholder-val="{{ false }}"><div><button type="button" class="st-btn" onClick="{{ onInstall }}">Installer Crée Studio</button></div></sc-if>
+            <sc-if value="{{ isIOS }}" hint-placeholder-val="{{ false }}"><p style="margin:0;padding:14px 16px;border-radius:14px;background:rgba(123,82,240,.07);font-size:14px;line-height:1.5">Sur iPhone : touchez Partager dans Safari, puis « Sur l'écran d'accueil ». Les notifications fonctionnent une fois l'application installée.</p></sc-if>
+            <sc-if value="{{ installHint }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font-size:14px;color:#625C78">Le bouton d'installation apparaît dans Chrome, Edge ou Safari lorsque l'application est publiée en HTTPS.</p></sc-if>
+          </div>
+
+          <div class="st-card" style="display:grid;gap:14px">
+            <h2 style="margin:0;font-size:18px;font-weight:500">Source des demandes</h2>
+            <p style="margin:0;font-size:15px;line-height:1.5;color:#3A3550">L'adresse du service qui reçoit le formulaire (la même que la constante ENDPOINT). Laissez vide pour utiliser les données de démonstration.</p>
+            <label for="st-ep" class="st-lb">Adresse du service</label>
+            <input id="st-ep" class="st-in" type="url" placeholder="https://script.google.com/macros/s/…/exec" value="{{ endpoint }}" onChange="{{ onEndpoint }}">
+            <div role="group" aria-label="Fréquence de vérification" style="display:flex;flex-wrap:wrap;gap:6px;align-items:center"><span style="font-size:14px;color:#625C78;margin-right:4px">Vérifier toutes les</span><sc-for list="{{ polls }}" as="p" hint-placeholder-count="3"><button type="button" class="st-chip" aria-pressed="{{ p.on }}" onClick="{{ p.onClick }}">{{ p.label }}</button></sc-for></div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center"><button type="button" class="st-gh" onClick="{{ onSync }}">{{ syncBtn }}</button><span style="font-size:13px;color:#625C78">{{ syncText }}</span></div>
+            <sc-if value="{{ syncErr }}" hint-placeholder-val="{{ false }}"><p role="alert" style="margin:0;font-size:14px;color:#9B1C3F">Impossible de joindre le service. Vérifiez l'adresse et le déploiement.</p></sc-if>
+          </div>
+
+          <div class="st-card" style="display:grid;gap:14px">
+            <h2 style="margin:0;font-size:18px;font-weight:500">Push serveur <span style="font-size:13px;font-weight:400;color:#625C78">· avancé</span></h2>
+            <p style="margin:0;font-size:15px;line-height:1.5;color:#3A3550">Pour être alerté application fermée, votre serveur envoie un push à cet abonnement avec votre paire de clés VAPID.</p>
+            <label for="st-vapid" class="st-lb">Clé publique VAPID</label>
+            <input id="st-vapid" class="st-in" type="text" placeholder="BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U" value="{{ vapid }}" onChange="{{ onVapid }}" autoComplete="off">
+            <div><button type="button" class="st-gh" onClick="{{ onSubscribe }}" disabled="{{ noVapid }}">Créer l'abonnement</button></div>
+            <sc-if value="{{ hasSub }}" hint-placeholder-val="{{ false }}"><textarea class="st-in" readonly="readonly" aria-label="Abonnement push" style="font:400 13px/1.5 'Geist Mono',monospace" value="{{ subJson }}"></textarea></sc-if>
+            <sc-if value="{{ subErr }}" hint-placeholder-val="{{ false }}"><p role="alert" style="margin:0;font-size:14px;color:#9B1C3F">{{ subErr }}</p></sc-if>
+          </div>
+
+          <div class="st-card" style="display:grid;gap:14px">
+            <h2 style="margin:0;font-size:18px;font-weight:500">Tests et export</h2>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <button type="button" class="st-btn" onClick="{{ onSimulate }}">Simuler une nouvelle demande</button>
+              <button type="button" class="st-gh" onClick="{{ onCsv }}">Exporter tout (CSV)</button>
+              <button type="button" class="st-gh" onClick="{{ onJson }}">Exporter tout (JSON)</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+    </main>
+  </div>
+
+  <nav class="st-tabs" aria-label="Navigation">
+    <sc-for list="{{ nav }}" as="n" hint-placeholder-count="3"><button type="button" class="st-tab" aria-current="{{ n.cur }}" onClick="{{ n.onClick }}"><span aria-hidden="true" style="width:18px;height:18px;border-radius:{{ n.shape }};border:1.6px solid currentColor"></span>{{ n.short }}<sc-if value="{{ n.hasCount }}" hint-placeholder-val="{{ false }}"><span class="st-badge">{{ n.count }}</span></sc-if></button></sc-for>
+  </nav>
+
+  <div aria-live="polite" style="position:fixed;top:calc(12px + env(safe-area-inset-top));right:12px;left:12px;z-index:20;display:grid;justify-items:end;gap:8px;pointer-events:none">
+    <sc-for list="{{ toasts }}" as="t" hint-placeholder-count="0">
+      <div role="status" style="pointer-events:auto;width:min(100%,380px);display:flex;gap:12px;align-items:flex-start;padding:14px 14px 14px 16px;border-radius:18px;background:rgba(255,255,255,.95);backdrop-filter:blur(14px);box-shadow:0 0 0 1px rgba(123,82,240,.15),0 20px 50px -20px rgba(60,30,150,.45);animation:stToast .4s cubic-bezier(.2,.7,.2,1) both">
+        <span aria-hidden="true" style="flex:none;margin-top:4px;width:10px;height:10px;border-radius:50%;background:#6A3DE8;animation:stPulse 1.6s ease-out 2"></span>
+        <button type="button" onClick="{{ t.onOpen }}" style="flex:1;min-width:0;border:0;background:none;padding:0;text-align:left;cursor:pointer"><span style="display:block;font-size:15px;font-weight:500">{{ t.title }}</span><span style="display:block;margin-top:3px;font-size:14px;color:#625C78">{{ t.body }}</span></button>
+        <button type="button" onClick="{{ t.onClose }}" aria-label="Fermer" style="flex:none;width:32px;height:32px;margin:-6px -4px 0 0;border:0;border-radius:50%;background:none;cursor:pointer;font-size:18px;color:#625C78">×</button>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  KEY = 'cree-studio:v1';
+  STATUSES = [
+    { id: 'new', label: 'Nouvelle', color: 'oklch(0.58 0.2 290)' },
+    { id: 'progress', label: 'En échange', color: 'oklch(0.72 0.15 70)' },
+    { id: 'quote', label: 'Devis envoyé', color: 'oklch(0.62 0.15 240)' },
+    { id: 'signed', label: 'Signée', color: 'oklch(0.64 0.15 155)' },
+    { id: 'archived', label: 'Archivée', color: 'oklch(0.7 0.02 290)' }
+  ];
+  // Libellés des réponses, dans l'ordre du formulaire
+  SCHEMA = [
+    { t: 'Coordonnées et événement', rows: [['Nom', 'nom'], ['E-mail', 'email'], ['Téléphone', 'tel'], ["Type d'événement", 'type', 'type_autre'], ['Date prévue', 'date', null, 'date'], ['Invités', 'invites', null, 'invites'], ['Lieux', 'lieux'], ['Langues', 'langues', 'langues_autre']] },
+    { t: 'Contenu et réponses', rows: [['Rubriques', 'rubriques', 'rubriques_autre'], ['Déroulé de la journée', 'deroule', null, 'wide'], ['Informations à recueillir', 'infos'], ['Destination des réponses', 'destination', 'destination_autre'], ['Date limite', 'limite', null, 'date'], ['Réponse', 'modifiable']] },
+    { t: 'Style visuel', rows: [['Ambiance', 'ambiance', 'ambiance_autre', 'amb'], ['Palette', 'palette', null, 'pal'], ['Palette décrite', 'palette_txt'], ['Couleurs à éviter', 'eviter'], ['Fichiers', 'fichiers'], ['Références', 'refs', null, 'wide'], ['À éviter absolument', 'deteste']] },
+    { t: 'Expérience et mise en ligne', rows: [['Ouverture', 'ouverture'], ["Niveau d'animation", 'animation', null, 'anim'], ['Musique', 'musique'], ['Fonctions', 'fonctions'], ['Nom de domaine', 'domaine'], ['Mise en ligne', 'miseenligne', null, 'date'], ['Accès', 'acces'], ['Modifié par', 'editeur'], ['Aisance', 'aisance'], ['Budget', 'budget'], ['Demande particulière', 'demande', null, 'wide']] }
+  ];
+  SW = { 'Classique': ['#EFE6D2', '#3B0F1D'], 'Romantique': ['#F2D9D6', '#B9857F'], 'Moderne': ['#F2F0EC', '#2B2B2B'], 'Champêtre': ['#DCE3CC', '#7C8B5E'], 'Luxueuse': ['#D9BC72', '#2A1119'],
+    'Ivoire et or': ['#F6EEDC', '#C9A24F'], 'Rose poudré': ['#EFCFCB', '#9C5B5F'], 'Vert sauge': ['#C9D3B8', '#5F6F4A'], 'Bleu nuit': ['#1F2A44', '#D9BC72'], 'Terracotta': ['#C8785A', '#F1DCC8'] };
+  AV = ['#E9E1FF', '#FBE0EE', '#E0ECFF', '#E2F3E8', '#FFF0D9'];
+
+  state = this.load();
+
+  seed() {
+    const h = 3600e3, now = Date.now();
+    const mk = (o, ago, status, read) => ({ id: 'd' + Math.round(now - ago * h) + Math.random().toString(36).slice(2, 5), receivedAt: new Date(now - ago * h).toISOString(), status, read, notes: '', data: o });
+    return [
+      mk({ nom: 'Camille Laurent', email: 'camille.laurent@gmail.com', tel: '+33 6 12 45 78 90', type: 'Mariage', date: '2027-06-12', invites: 140, lieux: ['Château de Vaux-le-Vicomte', 'Église Saint-Aspais, Melun'], langues: ['Français', 'Anglais'], rubriques: ['Programme', 'Lieu et itinéraire', 'Dress code', 'Hébergement', 'Liste de cadeaux'], deroule: "15 h cérémonie religieuse\n17 h vin d'honneur dans les jardins\n20 h dîner puis soirée dansante", infos: ['Présence', 'Nombre de personnes', 'Régime alimentaire'], destination: 'Tableur', limite: '2027-04-30', modifiable: 'Réponse modifiable', ambiance: 'Luxueuse', palette: 'Ivoire et or', eviter: 'Rose fluo', fichiers: ['faire-part.pdf', 'monogramme.png'], refs: 'Le faire-part papier, les jardins à la française', deteste: 'Les polices manuscrites trop chargées', ouverture: 'Cachet de cire', animation: 1, musique: 'Quatuor à cordes', fonctions: ['Ajout au calendrier', 'Compte à rebours'], domaine: 'camille-et-hugo.fr', miseenligne: '2027-01-15', acces: 'Lien privé', editeur: 'Plusieurs personnes', aisance: "À l'aise", budget: '1 000 à 2 000 €', demande: 'Une version anglaise pour la famille de Hugo.' }, 1.5, 'new', false),
+      mk({ nom: 'Yasmine Benali', email: 'yasmine.b@outlook.fr', tel: '+33 7 81 22 34 56', type: 'Anniversaire', date: '2027-02-20', invites: 60, lieux: ['Rooftop Le Perchoir, Paris 11e'], langues: ['Français', 'Arabe'], rubriques: ['Programme', 'Lieu et itinéraire', 'Galerie photos et vidéos'], infos: ['Présence', 'Message'], destination: 'E-mail', modifiable: 'Réponse unique', ambiance: 'Moderne', palette: 'Bleu nuit', ouverture: 'Rideau', animation: 2, fonctions: ["Installation sur l'écran d'accueil", 'Hashtag dédié'], acces: 'Lien privé', editeur: 'Moi seul(e)', aisance: 'Très à l\'aise', budget: '500 à 1 000 €', demande: 'Mes 30 ans, surprise pour mes amis.' }, 6, 'new', false),
+      mk({ nom: 'Thomas et Léa Moreau', email: 'moreau.famille@free.fr', type: 'Baptême', date: '2027-03-14', invites: 45, lieux: ['Église Notre-Dame, Lyon', 'Maison familiale, Écully'], langues: ['Français'], rubriques: ['Programme', 'Lieu et itinéraire', 'Menu', 'Contacts'], infos: ['Présence', 'Nombre de personnes', 'Choix de menu'], destination: 'Tableur', limite: '2027-02-28', ambiance: 'Champêtre', palette: 'Vert sauge', ouverture: 'Enveloppe', animation: 0, fonctions: ['Ajout au calendrier', 'Rappels par notification'], acces: 'Lien privé', editeur: 'Votre équipe, pour moi', aisance: 'Débutant', budget: 'Moins de 500 €' }, 27, 'progress', true),
+      mk({ nom: 'Inès Carvalho', email: 'ines.carvalho@gmail.com', tel: '+351 912 345 678', type: 'Mariage', date: '2027-09-04', invites: 220, lieux: ['Quinta da Regaleira, Sintra'], langues: ['Français', 'Portugais', 'Anglais'], rubriques: ['Programme', 'Lieu et itinéraire', 'Hébergement', 'Liste de cadeaux', 'Galerie photos et vidéos', 'Contacts'], infos: ['Présence', 'Nombre de personnes', 'Régime alimentaire', 'Message'], destination: 'Tableur', limite: '2027-07-01', modifiable: 'Réponse modifiable', ambiance: 'Romantique', palette: 'Terracotta', refs: 'Les azulejos, la lumière de fin de journée', ouverture: 'Enveloppe', animation: 1, musique: 'Fado instrumental', fonctions: ['Compte à rebours', 'Ajout au calendrier', 'Hashtag dédié'], domaine: 'ines-et-rafael.com', acces: 'Accès libre', editeur: 'Plusieurs personnes', aisance: "À l'aise", budget: 'Plus de 2 000 €' }, 72, 'quote', true),
+      mk({ nom: 'Marc Dubois', email: 'marc.dubois@entreprise.fr', tel: '+33 6 98 76 54 32', type: 'Autre', type_autre: 'Soirée des 20 ans de l\'entreprise', date: '2026-12-11', invites: 300, lieux: ['Pavillon Ledoyen, Paris 8e'], langues: ['Français', 'Anglais'], rubriques: ['Programme', 'Lieu et itinéraire', 'Dress code', 'Contacts'], infos: ['Présence', 'Régime alimentaire'], destination: 'E-mail', ambiance: 'Classique', ouverture: 'Aucune', animation: 0, fonctions: ['Ajout au calendrier'], acces: 'Lien privé', editeur: 'Votre équipe, pour moi', budget: '1 000 à 2 000 €' }, 150, 'signed', true),
+      mk({ nom: 'Sophie Martin', email: 'sophie.m@laposte.net', type: 'Anniversaire', date: '2027-05-08', invites: 80, lieux: ['Domaine des Oliviers, Aix-en-Provence'], langues: ['Français'], rubriques: ['Programme', 'Lieu et itinéraire', 'Hébergement'], infos: ['Présence', 'Nombre de personnes'], destination: 'Tableur', ambiance: 'Champêtre', palette: 'Rose poudré', ouverture: 'Enveloppe', animation: 1, fonctions: ['Compte à rebours'], acces: 'Lien privé', budget: 'Je ne sais pas encore' }, 220, 'archived', true)
+    ];
+  }
+  load() {
+    const base = { view: 'inbox', subs: null, selId: null, q: '', fStatus: 'all', toasts: [], mobileDetail: false, endpoint: '', poll: 60, vapid: '', subJson: '', subErr: '', canInstall: false, installed: false, notif: 'default', syncing: false, syncErr: false, lastSync: null, copied: false };
+    try { const j = JSON.parse(localStorage.getItem(this.KEY) || 'null'); if (j) Object.assign(base, { subs: j.subs, endpoint: j.endpoint || '', poll: j.poll || 60, vapid: j.vapid || '', lastSync: j.lastSync || null }); } catch (e) {}
+    if (!base.subs) base.subs = this.seed();
+    return base;
+  }
+  save() { const s = this.state; try { localStorage.setItem(this.KEY, JSON.stringify({ subs: s.subs, endpoint: s.endpoint, poll: s.poll, vapid: s.vapid, lastSync: s.lastSync })); } catch (e) {} }
+
+  componentDidMount() {
+    this.ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    this.standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+    this.setState({ notif: 'Notification' in window ? Notification.permission : 'unsupported', installed: !!this.standalone });
+    if ('serviceWorker' in navigator && window.isSecureContext && window.self === window.top) {
+      navigator.serviceWorker.register('sw.js').then(r => { this.reg = r; }).catch(() => {});
+      try { navigator.serviceWorker.addEventListener('message', e => { if (e.data && e.data.open) this.open(e.data.open); }); } catch (e) {}
+    }
+    this.bip = e => { e.preventDefault(); this.prompt = e; this.setState({ canInstall: true }); };
+    this.ai = () => this.setState({ installed: true, canInstall: false });
+    addEventListener('beforeinstallprompt', this.bip); addEventListener('appinstalled', this.ai);
+    const h = location.hash.slice(1); if (h) this.open(h);
+    this.schedule();
+    if (this.state.endpoint) this.sync();
+  }
+  componentWillUnmount() { clearInterval(this.timer); removeEventListener('beforeinstallprompt', this.bip); removeEventListener('appinstalled', this.ai); }
+  componentDidUpdate(pp, ps) {
+    const s = this.state;
+    if (ps.subs !== s.subs || ps.endpoint !== s.endpoint || ps.poll !== s.poll || ps.vapid !== s.vapid || ps.lastSync !== s.lastSync) this.save();
+    if (ps.poll !== s.poll || ps.endpoint !== s.endpoint) this.schedule();
+    const u = s.subs.filter(x => !x.read).length;
+    document.title = (u ? `(${u}) ` : '') + 'Crée Studio';
+    if (navigator.setAppBadge) { try { u ? navigator.setAppBadge(u) : navigator.clearAppBadge(); } catch (e) {} }
+  }
+  schedule() { clearInterval(this.timer); if (this.state.endpoint) this.timer = setInterval(() => this.sync(true), this.state.poll * 1000); }
+
+  // ---- données ----
+  upd(id, patch) { this.setState(s => ({ subs: s.subs.map(x => x.id === id ? { ...x, ...patch } : x) })); }
+  open(id) { if (!this.state.subs.find(x => x.id === id)) return; this.upd(id, { read: true }); this.setState({ selId: id, view: 'inbox', mobileDetail: true }); window.scrollTo(0, 0); }
+  async sync(silent) {
+    const ep = this.state.endpoint.trim(); if (!ep || this.state.syncing) return;
+    this.setState({ syncing: true, syncErr: false });
+    try {
+      const r = await fetch(ep, { cache: 'no-store' }); if (!r.ok) throw 0;
+      const arr = await r.json(); const known = new Set(this.state.subs.map(x => x.id)); const fresh = [];
+      (Array.isArray(arr) ? arr : []).forEach(o => {
+        const id = String(o.id || (o.envoye_le || o.receivedAt || '') + (o.email || ''));
+        if (known.has(id)) return;
+        const { id: _i, receivedAt, ...data } = o;
+        fresh.push({ id, receivedAt: receivedAt || o.envoye_le || new Date().toISOString(), status: 'new', read: false, notes: '', data });
+      });
+      this.setState(s => ({ subs: [...fresh, ...s.subs], syncing: false, lastSync: new Date().toISOString() }));
+      fresh.forEach(f => this.alert(f));
+    } catch (e) { this.setState({ syncing: false, syncErr: true }); }
+  }
+  async alert(sub) {
+    const d = sub.data, title = 'Nouvelle demande', body = `${d.nom || 'Un client'} · ${this.typeOf(d)}${d.date ? ' · ' + this.fd(d.date) : ''}`;
+    this.toast(title, body, sub.id);
+    try { navigator.vibrate && navigator.vibrate([12, 40, 12]); } catch (e) {}
+    if (this.state.notif === 'granted') {
+      try { const r = this.reg || (navigator.serviceWorker && await navigator.serviceWorker.getRegistration());
+        if (r) r.showNotification(title, { body, icon: 'icons/icon-192.png', badge: 'icons/icon-192.png', tag: sub.id, data: { id: sub.id } });
+        else new Notification(title, { body, icon: 'icons/icon-192.png' });
+      } catch (e) { try { new Notification(title, { body }); } catch (x) {} }
+    }
+  }
+  toast(title, body, id) {
+    const tid = Math.random().toString(36).slice(2);
+    this.setState(s => ({ toasts: [...s.toasts.slice(-2), { tid, title, body, id }] }));
+    setTimeout(() => this.setState(s => ({ toasts: s.toasts.filter(t => t.tid !== tid) })), 6500);
+  }
+  simulate = () => {
+    const pool = this.seed(); const p = pool[Math.floor(Math.random() * 4)];
+    const names = ['Élise Garnier', 'Nathan Roche', 'Chloé Petit', 'Hugo Lefèvre', 'Manon Girard', 'Samir Haddad'];
+    const sub = { ...p, id: 'd' + Date.now(), receivedAt: new Date().toISOString(), status: 'new', read: false, data: { ...p.data, nom: names[Math.floor(Math.random() * names.length)] } };
+    this.setState(s => ({ subs: [sub, ...s.subs] }));
+    this.alert(sub);
+  };
+  download(name, text, type) { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type })); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); }
+  flat(x) { const o = { id: x.id, recu_le: x.receivedAt, statut: this.st(x.status).label, notes: x.notes }; Object.entries(x.data).forEach(([k, v]) => { o[k] = Array.isArray(v) ? v.join(' | ') : v; }); return o; }
+  csv = () => {
+    const rows = this.state.subs.map(x => this.flat(x)); const keys = [...new Set(rows.flatMap(r => Object.keys(r)))];
+    const esc = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+    this.download('demandes-cree.csv', '\ufeff' + [keys.join(';'), ...rows.map(r => keys.map(k => esc(r[k])).join(';'))].join('\n'), 'text/csv');
+  };
+  json = () => this.download('demandes-cree.json', JSON.stringify(this.state.subs, null, 2), 'application/json');
+
+  // ---- formatage ----
+  st(id) { return this.STATUSES.find(x => x.id === id) || this.STATUSES[0]; }
+  typeOf(d) { return d.type === 'Autre' && d.type_autre ? d.type_autre : (d.type || 'Événement'); }
+  fd(v, opt) { try { return new Date(v.length <= 10 ? v + 'T00:00:00' : v).toLocaleDateString('fr-FR', opt || { day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) { return v; } }
+  rel(iso) {
+    const m = (Date.now() - new Date(iso)) / 60000;
+    if (m < 1) return "à l'instant"; if (m < 60) return Math.round(m) + ' min'; if (m < 1440) return Math.round(m / 60) + ' h';
+    if (m < 2880) return 'hier'; return this.fd(iso, { day: 'numeric', month: 'short' });
+  }
+  initials(n) { return (n || '?').split(/\s+/).filter(w => /^[A-ZÀ-Ý]/.test(w)).slice(0, 2).map(w => w[0]).join('') || '?'; }
+  val(d, key, alt, fmt) {
+    let v = d[key];
+    if (v == null || v === '' || (Array.isArray(v) && !v.length)) return '';
+    if (fmt === 'date') return this.fd(v);
+    if (fmt === 'invites') return '≈ ' + v + ' invités';
+    if (fmt === 'anim') return ['Discret', 'Modéré', 'Spectaculaire'][v] || '';
+    if (Array.isArray(v)) v = v.map(x => (typeof x === 'object' ? x.name : x)).join(key === 'lieux' || key === 'fichiers' ? '\n' : ', ');
+    if (alt && d[alt]) v += ' — ' + d[alt];
+    return String(v);
+  }
+
+  renderVals() {
+    const s = this.state, view = s.view;
+    const go = v => () => this.setState({ view: v, mobileDetail: false });
+    const unread = s.subs.filter(x => !x.read).length;
+    const nav = [{ id: 'inbox', label: 'Demandes', short: 'Demandes', shape: '5px', count: unread }, { id: 'stats', label: "Vue d'ensemble", short: 'Aperçu', shape: '50%', count: 0 }, { id: 'settings', label: 'Réglages', short: 'Réglages', shape: '5px 5px 50% 50%', count: 0 }]
+      .map(n => ({ ...n, cur: view === n.id ? 'page' : 'false', hasCount: n.count > 0, onClick: go(n.id) }));
+
+    const q = s.q.trim().toLowerCase();
+    const list = s.subs.filter(x => (s.fStatus === 'all' ? x.status !== 'archived' : x.status === s.fStatus) && (!q || JSON.stringify(x.data).toLowerCase().includes(q)))
+      .sort((a, b) => new Date(b.receivedAt) - new Date(a.receivedAt));
+    const rows = list.map((x, i) => { const d = x.data, st = this.st(x.status); return {
+      id: x.id, name: d.nom || 'Sans nom', initials: this.initials(d.nom), avBg: this.AV[(d.nom || '').length % this.AV.length], unread: !x.read, weight: x.read ? '450' : '600',
+      when: this.rel(x.receivedAt), meta: [this.typeOf(d), d.date ? this.fd(d.date, { day: 'numeric', month: 'short', year: 'numeric' }) : '', d.invites ? d.invites + ' inv.' : ''].filter(Boolean).join(' · '),
+      status: st.label, color: st.color, cur: x.id === s.selId ? 'true' : 'false', delay: Math.min(i, 8) * 30 + 'ms', onClick: () => this.open(x.id) }; });
+    const counts = id => s.subs.filter(x => x.status === id).length;
+    const filters = [{ id: 'all', label: 'Actives', count: s.subs.filter(x => x.status !== 'archived').length }, ...this.STATUSES.map(t => ({ id: t.id, label: t.label, color: t.color, count: counts(t.id) }))]
+      .map(f => ({ ...f, hasDot: !!f.color, on: s.fStatus === f.id, onClick: () => this.setState({ fStatus: f.id }) }));
+
+    const x = s.subs.find(y => y.id === s.selId);
+    let sel = {};
+    if (x) {
+      const d = x.data, st = this.st(x.status);
+      const summary = this.SCHEMA.map(g => g.t + '\n' + g.rows.map(r => { const v = this.val(d, r[1], r[2], r[3]); return v ? `${r[0]} : ${v}` : ''; }).filter(Boolean).join('\n')).join('\n\n');
+      sel = { id: x.id, name: d.nom || 'Sans nom', received: 'Reçue le ' + this.fd(x.receivedAt, { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }),
+        meta: [this.typeOf(d), d.date ? this.fd(d.date) : '', d.invites ? '≈ ' + d.invites + ' invités' : ''].filter(Boolean).join(' · '),
+        status: st.label, statusColor: st.color, statusBg: 'rgba(123,82,240,.08)',
+        mailto: `mailto:${d.email || ''}?subject=${encodeURIComponent('Votre invitation ' + this.typeOf(d).toLowerCase() + ' — Crée')}&body=${encodeURIComponent('Bonjour ' + ((d.nom || '').split(' ')[0]) + ',\n\nMerci pour votre demande. ')}`,
+        hasTel: !!d.tel, telHref: 'tel:' + (d.tel || '').replace(/\s/g, ''), waHref: 'https://wa.me/' + (d.tel || '').replace(/[^\d]/g, ''),
+        copyLabel: s.copied ? 'Copié' : 'Copier le résumé',
+        onCopy: () => { try { navigator.clipboard.writeText(d.nom + '\n\n' + summary); } catch (e) {} this.setState({ copied: true }); setTimeout(() => this.setState({ copied: false }), 1600); },
+        onExport: () => this.download(`demande-${(d.nom || 'client').toLowerCase().replace(/[^a-z0-9]+/g, '-')}.json`, JSON.stringify(x, null, 2), 'application/json'),
+        statuses: this.STATUSES.map(t => ({ label: t.label, color: t.color, on: x.status === t.id, onClick: () => this.upd(x.id, { status: t.id }) })),
+        notes: x.notes || '', onNotes: e => this.upd(x.id, { notes: e.target.value }),
+        onDelete: () => { if (confirm('Supprimer définitivement cette demande ?')) this.setState(p => ({ subs: p.subs.filter(y => y.id !== x.id), selId: null, mobileDetail: false })); },
+        sections: this.SCHEMA.map((g, i) => ({ num: String(i + 1).padStart(2, '0'), title: g.t, rows: g.rows.map(r => {
+          const v = this.val(d, r[1], r[2], r[3]); const swk = r[3] === 'amb' || r[3] === 'pal' ? this.SW[d[r[1]]] : null;
+          return { k: r[0], v: v || 'Non renseigné', color: v ? '#15112A' : '#8A849C', span: r[3] === 'wide' ? '1 / -1' : 'auto', hasSw: !!swk, sw: (swk || []).map(c => ({ c })) };
+        }) })) };
+    }
+
+    // statistiques
+    const all = s.subs, active = all.filter(y => y.status !== 'archived');
+    const week = all.filter(y => Date.now() - new Date(y.receivedAt) < 7 * 864e5).length;
+    const signed = counts('signed'), decided = all.filter(y => ['signed', 'archived'].includes(y.status)).length;
+    const fut = all.filter(y => y.data.date && new Date(y.data.date) >= new Date(new Date().toDateString()) && y.status !== 'archived').sort((a, b) => new Date(a.data.date) - new Date(b.data.date));
+    const days = dd => Math.round((new Date(dd + 'T00:00:00') - new Date(new Date().toDateString())) / 864e5);
+    const kpis = [
+      { label: 'Non lues', value: String(unread), hint: unread ? 'À traiter en priorité' : 'Tout est à jour' },
+      { label: 'Reçues cette semaine', value: String(week), hint: all.length + ' au total' },
+      { label: 'Taux de signature', value: decided ? Math.round(signed / decided * 100) + ' %' : '—', hint: signed + ' signée(s) sur ' + decided + ' conclue(s)' },
+      { label: 'Prochain événement', value: fut[0] ? 'J-' + days(fut[0].data.date) : '—', hint: fut[0] ? (fut[0].data.nom + ' · ' + this.typeOf(fut[0].data)) : 'Aucun' }
+    ].map((k, i) => ({ ...k, delay: i * 50 + 'ms' }));
+    const pipeline = this.STATUSES.map(t => ({ label: t.label, color: t.color, count: counts(t.id), pct: (all.length ? counts(t.id) / all.length * 100 : 0) + '%' }));
+    const dist = (key, opts) => { const m = {}; active.forEach(y => { const v = key === 'type' ? y.data.type : y.data[key]; if (v) m[v] = (m[v] || 0) + 1; });
+      const keys = opts || Object.keys(m); const mx = Math.max(1, ...keys.map(k => m[k] || 0)); return keys.map(k => ({ label: k, count: m[k] || 0, pct: ((m[k] || 0) / mx * 100) + '%' })); };
+    const dists = [{ title: "Par type d'événement", items: dist('type', ['Mariage', 'Anniversaire', 'Baptême', 'Autre']) }, { title: 'Par budget', items: dist('budget', ['Moins de 500 €', '500 à 1 000 €', '1 000 à 2 000 €', 'Plus de 2 000 €', 'Je ne sais pas encore']) }];
+    const upcoming = fut.slice(0, 6).map(y => ({ day: this.fd(y.data.date, { day: 'numeric' }), month: this.fd(y.data.date, { month: 'short' }).replace('.', ''), name: y.data.nom, inDays: 'J-' + days(y.data.date),
+      meta: this.typeOf(y.data) + (y.data.lieux && y.data.lieux[0] ? ' · ' + y.data.lieux[0] : '') + ' · ' + this.st(y.status).label, onClick: () => this.open(y.id) }));
+
+    const ep = s.endpoint.trim();
+    const syncText = ep ? (s.syncErr ? 'Service injoignable' : s.lastSync ? 'Synchronisé ' + (this.rel(s.lastSync) === "à l'instant" ? "à l'instant" : 'il y a ' + this.rel(s.lastSync)) : 'Jamais synchronisé') : 'Données de démonstration';
+    const nf = s.notif;
+    return {
+      nav, isInbox: view === 'inbox', isStats: view === 'stats', isSettings: view === 'settings',
+      inboxSub: unread ? `${unread} nouvelle${unread > 1 ? 's' : ''} demande${unread > 1 ? 's' : ''} à lire` : 'Toutes les demandes sont lues',
+      q: s.q, onQ: e => this.setState({ q: e.target.value }), filters, rows, noRows: rows.length === 0,
+      mobileDetail: s.mobileDetail ? 'true' : 'false', onBack: () => this.setState({ mobileDetail: false }),
+      hasSel: !!x, noSel: !x, sel,
+      statsSub: `${active.length} demande${active.length > 1 ? 's' : ''} active${active.length > 1 ? 's' : ''}`,
+      kpis, pipeline, dists, upcoming,
+      notifLabel: nf === 'granted' ? 'Activées' : nf === 'denied' ? 'Bloquées' : nf === 'unsupported' ? 'Non prises en charge' : 'Désactivées',
+      notifDot: nf === 'granted' ? 'oklch(0.64 0.15 155)' : nf === 'denied' ? 'oklch(0.6 0.18 15)' : 'oklch(0.7 0.02 290)',
+      notifAsk: nf === 'default', notifBlocked: nf === 'denied',
+      onNotifEnable: async () => { try { const p = await Notification.requestPermission(); this.setState({ notif: p }); if (p === 'granted') this.toast('Notifications activées', 'Vous serez alerté à chaque nouvelle demande.'); } catch (e) {} },
+      onNotifTest: () => { const sub = s.subs[0]; if (sub) this.alert(sub); },
+      canInstall: s.canInstall && !s.installed, isIOS: !!this.ios && !s.installed, installHint: !s.canInstall && !s.installed && !this.ios,
+      installLabel: s.installed ? 'Installée' : 'Non installée', installDot: s.installed ? 'oklch(0.64 0.15 155)' : 'oklch(0.7 0.02 290)',
+      onInstall: async () => { if (!this.prompt) return; this.prompt.prompt(); const r = await this.prompt.userChoice; this.prompt = null; this.setState({ canInstall: false, installed: r.outcome === 'accepted' }); },
+      endpoint: s.endpoint, onEndpoint: e => this.setState({ endpoint: e.target.value, syncErr: false }),
+      polls: [[30, '30 s'], [60, '1 min'], [300, '5 min']].map(([v, l]) => ({ label: l, on: s.poll === v, onClick: () => this.setState({ poll: v }) })),
+      onSync: () => ep ? this.sync() : this.setState({ view: 'settings' }), syncBtn: s.syncing ? 'Synchronisation…' : ep ? 'Synchroniser' : 'Connecter',
+      syncText, syncDot: ep && !s.syncErr ? 'oklch(0.64 0.15 155)' : s.syncErr ? 'oklch(0.6 0.18 15)' : 'oklch(0.7 0.02 290)', syncErr: s.syncErr,
+      vapid: s.vapid, onVapid: e => this.setState({ vapid: e.target.value.trim() }), noVapid: !s.vapid,
+      hasSub: !!s.subJson, subJson: s.subJson, subErr: s.subErr,
+      onSubscribe: async () => {
+        try {
+          const r = this.reg || await navigator.serviceWorker.ready;
+          if (Notification.permission !== 'granted') { const p = await Notification.requestPermission(); this.setState({ notif: p }); if (p !== 'granted') throw new Error('Autorisez d\'abord les notifications.'); }
+          const k = s.vapid.replace(/-/g, '+').replace(/_/g, '/'); const raw = atob(k + '='.repeat((4 - k.length % 4) % 4));
+          const sub = await r.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: Uint8Array.from(raw, c => c.charCodeAt(0)) });
+          this.setState({ subJson: JSON.stringify(sub, null, 2), subErr: '' });
+        } catch (e) { this.setState({ subErr: (e && e.message) || "L'abonnement a échoué. Ouvrez l'application installée en HTTPS." }); }
+      },
+      onSimulate: this.simulate, onCsv: this.csv, onJson: this.json,
+      toasts: s.toasts.map(t => ({ title: t.title, body: t.body, onOpen: () => { if (t.id) this.open(t.id); this.setState(p => ({ toasts: p.toasts.filter(y => y.tid !== t.tid) })); }, onClose: () => this.setState(p => ({ toasts: p.toasts.filter(y => y.tid !== t.tid) })) }))
+    };
+  }
+}
+</script>
+</body>
+</html>
