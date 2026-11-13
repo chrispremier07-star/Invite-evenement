@@ -12,6 +12,7 @@
   ],
   "scripts": {
     "dev": "node scripts/dev.mjs",
+    "build:vercel": "npm run build -w @cree/form -w @cree/studio && node scripts/assemble-vercel.mjs",
     "build": "npm run build -w @cree/form -w @cree/studio -w @cree/api",
     "lint": "eslint . && prettier --check .",
     "format": "prettier --write .",

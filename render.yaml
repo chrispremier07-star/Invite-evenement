@@ -1,0 +1,54 @@
+# Modèle Render (Blueprint) : l'API seule, construite depuis le Dockerfile.
+# Les valeurs « sync: false » sont saisies dans le tableau de bord Render (jamais dans le dépôt).
+services:
+  - type: web
+    name: cree-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    region: frankfurt
+    plan: free # « free » s'endort après 15 min d'inactivité (réveil ~30 s) : passez à « starter » dès les vrais clients.
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - { key: NODE_ENV, value: production }
+      - { key: HOST, value: 0.0.0.0 }
+      - { key: TRUST_PROXY, value: 'true' }
+      - { key: LOG_LEVEL, value: info }
+      - { key: FORM_DIST_DIR, value: apps/form/dist }
+      - { key: STUDIO_DIST_DIR, value: apps/studio/dist }
+      - { key: SESSION_SECRET, generateValue: true }
+      - { key: IP_HASH_SECRET, generateValue: true }
+      - { key: SESSION_DAYS, value: '30' }
+      - { key: LOGIN_LINK_MINUTES, value: '15' }
+      - { key: LOGIN_LINK_COOLDOWN_SECONDS, value: '60' }
+      - { key: DEFAULT_RESPONSE_DELAY_HOURS, value: '48' }
+      - { key: DEFAULT_RETENTION_DAYS, value: '730' }
+      - { key: PURGE_DELAY_DAYS, value: '30' }
+      - { key: POLICY_VERSION, value: '2026-11' }
+      - { key: S3_REGION, value: auto }
+      - { key: S3_FORCE_PATH_STYLE, value: 'false' }
+      - { key: TURNSTILE_SCRIPT_URL, value: 'https://challenges.cloudflare.com/turnstile/v0/api.js' }
+      - { key: TURNSTILE_VERIFY_URL, value: 'https://challenges.cloudflare.com/turnstile/v0/siteverify' }
+      - { key: RATE_GLOBAL_PER_MINUTE, value: '300' }
+      - { key: RATE_SUBMIT_PER_HOUR, value: '10' }
+      - { key: RATE_UPLOAD_PER_HOUR, value: '60' }
+      - { key: RATE_AUTH_PER_HOUR, value: '10' }
+      # À saisir dans le tableau de bord :
+      - { key: PUBLIC_URL, sync: false }
+      - { key: STUDIO_URL, sync: false }
+      - { key: ALLOWED_ORIGINS, sync: false }
+      - { key: DATABASE_URL, sync: false }
+      - { key: ADMIN_EMAIL, sync: false }
+      - { key: PRIVACY_CONTROLLER_NAME, sync: false }
+      - { key: PRIVACY_CONTACT_EMAIL, sync: false }
+      - { key: VAPID_PUBLIC_KEY, sync: false }
+      - { key: VAPID_PRIVATE_KEY, sync: false }
+      - { key: VAPID_SUBJECT, sync: false }
+      - { key: SMTP_URL, sync: false }
+      - { key: MAIL_FROM, sync: false }
+      - { key: S3_ENDPOINT, sync: false }
+      - { key: S3_BUCKET, sync: false }
+      - { key: S3_ACCESS_KEY_ID, sync: false }
+      - { key: S3_SECRET_ACCESS_KEY, sync: false }
+      - { key: TURNSTILE_SITE_KEY, sync: false }
+      - { key: TURNSTILE_SECRET_KEY, sync: false }

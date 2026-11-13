@@ -34,7 +34,7 @@ export default tseslint.config(
   },
   { files: ['apps/studio/public/sw.js'], languageOptions: { globals: globals.serviceworker } },
   {
-    files: ['apps/api/**/*.ts', 'scripts/**/*.mjs', 'e2e/**/*.{ts,mjs}', '*.config.{ts,js}'],
+    files: ['apps/api/**/*.ts', 'scripts/**/*.mjs', 'e2e/**/*.{ts,mjs}', '*.config.{ts,js}', 'middleware.ts'],
     languageOptions: { globals: globals.node },
   },
 );
