@@ -327,15 +327,12 @@ describe('réglages, RGPD et rétention', () => {
       url: '/api/uploads/presign',
       payload: { filename: 'logo.png', contentType: 'image/png', size: content.length },
     });
-    const { attachmentId, url, fields } = pre.json() as {
+    const { attachmentId, url, headers } = pre.json() as {
       attachmentId: string;
       url: string;
-      fields: Record<string, string>;
+      headers: Record<string, string>;
     };
-    const form = new FormData();
-    for (const [k, v] of Object.entries(fields)) form.append(k, v);
-    form.append('file', new Blob([new Uint8Array(content)], { type: 'image/png' }), 'logo.png');
-    expect((await fetch(url, { method: 'POST', body: form })).status).toBe(204);
+    expect((await fetch(url, { method: 'PUT', headers, body: new Uint8Array(content) })).status).toBe(200);
     await ctx.app.inject({
       method: 'POST',
       url: '/api/submissions',

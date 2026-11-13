@@ -42,7 +42,7 @@ const json = (body: unknown): RequestInit => ({
 export const getConfig = () => call<PublicConfig>('/api/public-config');
 export const sendSubmission = (body: unknown) => call<{ id: string }>('/api/submissions', json(body));
 export const presign = (file: { filename: string; contentType: string; size: number }) =>
-  call<{ attachmentId: string; url: string; fields: Record<string, string> }>(
+  call<{ attachmentId: string; url: string; headers: Record<string, string> }>(
     '/api/uploads/presign',
     json(file),
   );
@@ -50,22 +50,20 @@ export const presign = (file: { filename: string; contentType: string; size: num
 /** Envoi direct au stockage avec progression (XMLHttpRequest, seul moyen d'observer l'envoi). */
 export function uploadToStorage(
   url: string,
-  fields: Record<string, string>,
+  headers: Record<string, string>,
   file: File,
   onProgress: (ratio: number) => void,
 ): Promise<void> {
   return new Promise((resolve, reject) => {
-    const form = new FormData();
-    for (const [k, v] of Object.entries(fields)) form.append(k, v);
-    form.append('file', file);
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', url);
+    xhr.open('PUT', url);
+    for (const [k, v] of Object.entries(headers)) xhr.setRequestHeader(k, v);
     xhr.upload.onprogress = (e) => e.lengthComputable && onProgress(e.loaded / e.total);
     xhr.onload = () =>
       xhr.status >= 200 && xhr.status < 300
         ? resolve()
         : reject(new ApiFail(xhr.status, 'televersement', 'Ce fichier n’a pas pu être envoyé. Réessayez.'));
     xhr.onerror = () => reject(new ApiFail(0, 'reseau', NETWORK_MESSAGE));
-    xhr.send(form);
+    xhr.send(file);
   });
 }

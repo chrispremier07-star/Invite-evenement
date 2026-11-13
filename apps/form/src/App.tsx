@@ -305,7 +305,7 @@ function Form() {
     patchFile(key, { status: 'uploading', progress: 0, error: undefined });
     try {
       const ps = await presign({ filename: file.name, contentType: file.type, size: file.size });
-      await uploadToStorage(ps.url, ps.fields, file, (r) => patchFile(key, { progress: r }));
+      await uploadToStorage(ps.url, ps.headers, file, (r) => patchFile(key, { progress: r }));
       patchFile(key, { status: 'done', progress: 1, id: ps.attachmentId });
     } catch (e) {
       patchFile(key, {

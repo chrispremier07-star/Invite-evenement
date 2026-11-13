@@ -71,8 +71,18 @@ Trois e-mails partent : lien de connexion du créateur, alerte « nouvelle deman
 
 Tout service compatible S3 convient (Cloudflare R2, AWS S3, Scaleway, Backblaze B2…). Créez un bucket **privé**, puis une clé d'accès limitée à ce bucket, et renseignez les variables `S3_*`.
 
-1. Autorisez le CORS du bucket pour l'adresse du formulaire (`POST`, en-têtes `*`, origine = `PUBLIC_URL`). Les envois de fichiers vont directement du navigateur au bucket.
-2. `S3_FORCE_PATH_STYLE=false` pour AWS S3 et R2, `true` pour MinIO.
+1. Autorisez le CORS du bucket pour l'adresse du formulaire : méthode `PUT`, en-tête `Content-Type`, origine = `PUBLIC_URL` (et `http://localhost:5173` pour tester). Les envois de fichiers vont directement du navigateur au bucket par une URL signée (PUT) qui fixe le type et la taille exacts ; R2 ne prend pas en charge les formulaires POST signés. Exemple de stratégie CORS pour R2 :
+   ```json
+   [
+     {
+       "AllowedOrigins": ["https://votre-domaine.tld"],
+       "AllowedMethods": ["PUT"],
+       "AllowedHeaders": ["content-type"],
+       "MaxAgeSeconds": 3600
+     }
+   ]
+   ```
+2. `S3_FORCE_PATH_STYLE=false` pour AWS S3 et R2 (avec R2 : `S3_REGION=auto`, `S3_ENDPOINT=https://<ID_DE_COMPTE>.r2.cloudflarestorage.com`), `true` pour MinIO.
 3. Les fichiers sont limités à 25 Mo et aux images, PDF et vidéos MP4 (`LIMITS` dans `packages/shared/src/questions.ts`). Les téléchargements du créateur utilisent des liens signés de 5 minutes.
 4. Activez le versionnage ou la réplication du bucket : c'est votre sauvegarde des fichiers.
 
@@ -136,7 +146,7 @@ npm test                                                  # unitaires + intégra
 npm run build && npm run test:e2e                         # Playwright : formulaire, Studio, temps réel, hors ligne, push, PWA
 ```
 
-Les tests d'intégration et de bout en bout exigent `docker compose up -d`. `npm run grep:faux` échoue s'il reste un jeu de données, une simulation, un `console.log`, un marqueur de tâche inachevée ou une valeur métier codée en dur.
+Les tests d'intégration et de bout en bout exigent `docker compose up -d` et utilisent toujours MinIO en local (`.env.test`), jamais le bucket de production. `npm run grep:faux` échoue s'il reste un jeu de données, une simulation, un `console.log`, un marqueur de tâche inachevée ou une valeur métier codée en dur.
 
 ## Dépannage
 

@@ -50,7 +50,7 @@ export function publicRoutes(app: FastifyInstance, deps: Deps) {
       const id = randomUUID();
       const safeName = input.filename.replace(/[^\w.\- ()]/g, '_').slice(0, 120) || 'fichier';
       const key = `uploads/${new Date().toISOString().slice(0, 7)}/${id}/${safeName}`;
-      const post = await deps.storage.presignUpload(key, input.contentType, LIMITS.fileBytes);
+      const post = await deps.storage.presignUpload(key, input.contentType, input.size);
       await db.insert(attachments).values({
         id,
         storageKey: key,
@@ -59,7 +59,7 @@ export function publicRoutes(app: FastifyInstance, deps: Deps) {
         size: input.size,
         ipHash: req.ipHash,
       });
-      return reply.code(201).send({ attachmentId: id, url: post.url, fields: post.fields });
+      return reply.code(201).send({ attachmentId: id, url: post.url, headers: post.headers });
     },
   );
 
@@ -109,7 +109,7 @@ export function publicRoutes(app: FastifyInstance, deps: Deps) {
       const sizes = new Map<string, number>();
       for (const f of files) {
         const head = await deps.storage.head(f.storageKey);
-        if (!head || head.size < 1 || head.size > LIMITS.fileBytes) {
+        if (!head || head.size < 1 || head.size > LIMITS.fileBytes || head.size !== f.size) {
           throw new HttpError(
             422,
             'fichier',

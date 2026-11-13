@@ -2,6 +2,7 @@ import { execFileSync } from 'node:child_process';
 import { defineConfig, devices } from '@playwright/test';
 
 try {
+  process.loadEnvFile('.env.test');
   process.loadEnvFile('.env');
 } catch {
   /* variables fournies par l'environnement (CI) */

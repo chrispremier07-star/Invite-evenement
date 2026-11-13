@@ -1,14 +1,20 @@
-import { DeleteObjectCommand, GetObjectCommand, HeadObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { createPresignedPost } from '@aws-sdk/s3-presigned-post';
+import {
+  DeleteObjectCommand,
+  GetObjectCommand,
+  HeadObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import type { Env } from '../env';
 
 export interface Storage {
+  /** URL d'envoi (PUT) signée : le type et la taille exacts du fichier font partie de la signature. */
   presignUpload(
     key: string,
     contentType: string,
-    maxBytes: number,
-  ): Promise<{ url: string; fields: Record<string, string> }>;
+    size: number,
+  ): Promise<{ url: string; headers: Record<string, string> }>;
   head(key: string): Promise<{ size: number; contentType: string | undefined } | null>;
   signedGetUrl(key: string, filename: string): Promise<string>;
   remove(key: string): Promise<void>;
@@ -28,17 +34,18 @@ export function createStorage(env: Env): Storage {
   });
   return {
     origin: new URL(env.S3_ENDPOINT).origin,
-    async presignUpload(key, contentType, maxBytes) {
-      return createPresignedPost(client, {
-        Bucket: env.S3_BUCKET,
-        Key: key,
-        Conditions: [
-          ['content-length-range', 1, maxBytes],
-          ['eq', '$Content-Type', contentType],
-        ],
-        Fields: { 'Content-Type': contentType },
-        Expires: 600,
-      });
+    async presignUpload(key, contentType, size) {
+      const url = await getSignedUrl(
+        client,
+        new PutObjectCommand({
+          Bucket: env.S3_BUCKET,
+          Key: key,
+          ContentType: contentType,
+          ContentLength: size,
+        }),
+        { expiresIn: 600, signableHeaders: new Set(['content-type', 'content-length']) },
+      );
+      return { url, headers: { 'Content-Type': contentType } };
     },
     async head(key) {
       try {

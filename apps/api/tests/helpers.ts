@@ -10,6 +10,8 @@ import { bootstrap } from '../src/services/core';
 import type { PushSender } from '../src/services/push';
 
 try {
+  // .env.test d'abord : il impose le stockage MinIO local aux tests.
+  process.loadEnvFile(resolve(import.meta.dirname, '../../../.env.test'));
   process.loadEnvFile(resolve(import.meta.dirname, '../../../.env'));
 } catch {
   /* les variables peuvent venir de l'environnement (CI) */

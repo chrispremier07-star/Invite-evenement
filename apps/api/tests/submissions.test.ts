@@ -129,15 +129,12 @@ describe('téléversement de fichiers', () => {
   async function upload(content: Buffer, contentType: string, filename: string) {
     const r = await presign({ filename, contentType, size: content.length });
     expect(r.statusCode).toBe(201);
-    const { attachmentId, url, fields } = r.json() as {
+    const { attachmentId, url, headers } = r.json() as {
       attachmentId: string;
       url: string;
-      fields: Record<string, string>;
+      headers: Record<string, string>;
     };
-    const form = new FormData();
-    for (const [k, v] of Object.entries(fields)) form.append(k, v);
-    form.append('file', new Blob([new Uint8Array(content)], { type: contentType }), filename);
-    const put = await fetch(url, { method: 'POST', body: form });
+    const put = await fetch(url, { method: 'PUT', headers, body: new Uint8Array(content) });
     return { attachmentId, status: put.status };
   }
 
@@ -153,7 +150,7 @@ describe('téléversement de fichiers', () => {
   it('envoie un vrai fichier dans le stockage, le rattache à la demande et le sert par URL signée', async () => {
     const content = Buffer.from('%PDF-1.4 faire-part de test intégré');
     const up = await upload(content, 'application/pdf', 'faire-part.pdf');
-    expect(up.status).toBe(204);
+    expect(up.status).toBe(200);
 
     const r = await post(body(validAnswers({ email: 'fichier@example.org', fichiers: [up.attachmentId] })));
     expect(r.statusCode).toBe(201);
@@ -181,14 +178,11 @@ describe('téléversement de fichiers', () => {
     expect(r2.json().error.fields.fichiers).toBeDefined();
   });
 
-  it('refuse un fichier dépassant la limite côté stockage', async () => {
+  it('refuse un fichier dont la taille ne correspond pas à celle annoncée (signature)', async () => {
     const r = await presign({ filename: 'a.png', contentType: 'image/png', size: 10 });
-    const { url, fields } = r.json() as { url: string; fields: Record<string, string> };
-    const form = new FormData();
-    for (const [k, v] of Object.entries(fields)) form.append(k, v);
-    form.append('file', new Blob([new Uint8Array(26 * 1024 * 1024)], { type: 'image/png' }), 'a.png');
-    const put = await fetch(url, { method: 'POST', body: form });
-    expect(put.status).toBe(400);
+    const { url, headers } = r.json() as { url: string; headers: Record<string, string> };
+    const put = await fetch(url, { method: 'PUT', headers, body: new Uint8Array(5000) });
+    expect(put.status).toBe(403);
   });
 
   it('refuse un identifiant de fichier inconnu', async () => {
