@@ -11,12 +11,12 @@ L'ordre compte : l'API d'abord (Vercel a besoin de son adresse), puis Vercel (l'
 
 ## 1. Services externes (comptes gratuits suffisants pour tester)
 
-| Besoin | Où | À récupérer |
-| --- | --- | --- |
+| Besoin          | Où                                      | À récupérer                                                    |
+| --------------- | --------------------------------------- | -------------------------------------------------------------- |
 | Base PostgreSQL | neon.tech > New project (région Europe) | `DATABASE_URL` (« Connection string », avec `sslmode=require`) |
-| E-mail | resend.com > API Keys | `SMTP_URL=smtps://resend:VOTRE_CLE@smtp.resend.com:465` |
-| Stockage | Cloudflare R2 (déjà fait) | `S3_*` du fichier `.env` |
-| Anti-robot | Cloudflare > Turnstile | clé de site et clé secrète (étape 5) |
+| E-mail          | resend.com > API Keys                   | `SMTP_URL=smtps://resend:VOTRE_CLE@smtp.resend.com:465`        |
+| Stockage        | Cloudflare R2 (déjà fait)               | `S3_*` du fichier `.env`                                       |
+| Anti-robot      | Cloudflare > Turnstile                  | clé de site et clé secrète (étape 5)                           |
 
 **E-mail sans domaine** : avec Resend, tant que votre domaine n'est pas vérifié, `MAIL_FROM="Crée <onboarding@resend.dev>"` n'envoie qu'à l'adresse de votre compte Resend. Mettez cette adresse dans `ADMIN_EMAIL` : le lien de connexion et les alertes arrivent. Pour tester la confirmation client, remplissez le formulaire avec cette même adresse.
 
@@ -45,17 +45,24 @@ Le dépôt est déjà sur GitHub : https://github.com/chrispremier07-star/Invite
 ## 4. Déployer le front sur Vercel
 
 1. vercel.com > Add New > **Project** > importez le dépôt.
-2. Laissez les réglages : [`vercel.json`](../vercel.json) fournit commande d'installation, de compilation et dossier de sortie (framework : *Other*).
+2. Laissez les réglages : [`vercel.json`](../vercel.json) fournit commande d'installation, de compilation et dossier de sortie (framework : _Other_).
 3. Variable d'environnement : **`API_ORIGIN`** = l'adresse de l'API à l'étape 3, sans `/` final.
 4. Deploy. Notez l'adresse du projet, par exemple `https://invite-evenement.vercel.app`.
 5. Test rapide : `https://…vercel.app/health` doit afficher `{"status":"ok"}` (relais vers l'API).
 
 ## 5. Turnstile et CORS avec l'adresse Vercel
 
-- **Turnstile** : Cloudflare > Turnstile > Add widget. Nom d'hôte : exactement `invite-evenement.vercel.app` (le domaine seul `vercel.app` n'est pas accepté). Mode *Managed*. Copiez la clé de site et la clé secrète dans les variables `TURNSTILE_*` de Render.
+- **Turnstile** : Cloudflare > Turnstile > Add widget. Nom d'hôte : exactement `invite-evenement.vercel.app` (le domaine seul `vercel.app` n'est pas accepté). Mode _Managed_. Copiez la clé de site et la clé secrète dans les variables `TURNSTILE_*` de Render.
 - **CORS du bucket R2** : bucket > Paramètres > Stratégie CORS :
   ```json
-  [{ "AllowedOrigins": ["https://invite-evenement.vercel.app"], "AllowedMethods": ["PUT"], "AllowedHeaders": ["content-type"], "MaxAgeSeconds": 3600 }]
+  [
+    {
+      "AllowedOrigins": ["https://invite-evenement.vercel.app"],
+      "AllowedMethods": ["PUT"],
+      "AllowedHeaders": ["content-type"],
+      "MaxAgeSeconds": 3600
+    }
+  ]
   ```
 
 ## 6. Corriger les adresses de l'API
@@ -71,7 +78,7 @@ ALLOWED_ORIGINS=https://invite-evenement.vercel.app
 ## 7. Tester en production
 
 1. `https://…vercel.app/studio/` : saisissez `ADMIN_EMAIL`, ouvrez le lien reçu par e-mail.
-2. *Réglages* > **Activer les notifications**, puis « Envoyer une notification de contrôle ».
+2. _Réglages_ > **Activer les notifications**, puis « Envoyer une notification de contrôle ».
 3. Sur un téléphone, ouvrez le formulaire, joignez une image, envoyez : la demande doit apparaître dans le Studio ouvert, et une notification doit arriver application fermée.
 4. Sur iPhone : installez d'abord le Studio sur l'écran d'accueil (Safari > Partager).
 

@@ -12,7 +12,9 @@ export default function middleware(request: Request): Response {
   const origin = process.env.API_ORIGIN;
   if (!origin) {
     return new Response(
-      JSON.stringify({ error: { code: 'configuration', message: 'Le service est en cours de configuration.' } }),
+      JSON.stringify({
+        error: { code: 'configuration', message: 'Le service est en cours de configuration.' },
+      }),
       { status: 503, headers: { 'content-type': 'application/json' } },
     );
   }

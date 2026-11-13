@@ -113,6 +113,8 @@ L'image [`Dockerfile`](Dockerfile) contient l'API et les deux interfaces. Exempl
 5. **Vérification** : `https://…/health` répond `{"status":"ok"}`. Ouvrez `/studio/`, connectez-vous avec `ADMIN_EMAIL`, activez les notifications dans _Réglages_.
 6. **Déploiement continu** : dans GitHub, secret `FLY_API_TOKEN` et variable `FLY_APP` ; la CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) déploie à chaque fusion sur `main` si tous les tests passent.
 
+**Vercel pour les fronts + API ailleurs** : guide pas à pas dans [`docs/DEPLOIEMENT-VERCEL.md`](docs/DEPLOIEMENT-VERCEL.md) (le relais `middleware.ts` transmet `/api/*` à l'API, variable `API_ORIGIN`).
+
 Si vous préférez héberger les fronts à part (Vercel, Netlify) : compilez `apps/form` et `apps/studio`, servez-les sur le même domaine principal et redirigez `/api/*` vers l'API ; ajoutez leurs origines à `ALLOWED_ORIGINS`.
 
 ### Mise à l'échelle
