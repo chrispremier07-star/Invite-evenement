@@ -11,3 +11,4 @@ coverage
 .DS_Store
 lh
 prototype/uploads
+render.env
