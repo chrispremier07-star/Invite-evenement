@@ -1,0 +1,11 @@
+// À coller dans Google Apps Script (script.google.com) — voir les étapes dans la conversation.
+const EMAIL_NOTIF = "";   // facultatif : votre adresse pour recevoir un e-mail à chaque réponse, sinon laissez ""
+
+function doPost(e) {
+  const d = JSON.parse(e.postData.contents);
+  const feuille = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+  if (feuille.getLastRow() === 0) feuille.appendRow(["Date", "Nom", "Présence", "Personnes", "Menu", "Régime", "Message"]);
+  feuille.appendRow([new Date(), d.nom, d.presence, d.nombre_de_personnes, d.menu, d.regime, d.message]);
+  if (EMAIL_NOTIF) MailApp.sendEmail(EMAIL_NOTIF, d.subject || "Nouvelle réponse mariage", d.nom + " : " + d.presence + " (" + d.nombre_de_personnes + " pers.)\nMenu : " + (d.menu || "-") + "\nRégime : " + (d.regime || "-") + "\n" + (d.message || ""));
+  return ContentService.createTextOutput("ok");
+}
