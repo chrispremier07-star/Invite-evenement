@@ -1,0 +1,8 @@
+Remplacez ces photos par les vôtres en gardant exactement les mêmes noms :
+
+accueil.jpg    → photo plein écran de l'accueil (format portrait, ~1200 x 1700 px)
+galerie-1.jpg  → première photo de la galerie (format paysage, ~1600 x 1100 px)
+galerie-2.jpg à galerie-5.jpg → format portrait (~1000 x 1300 px)
+
+Conseil : compressez-les (moins de 400 Ko chacune) sur https://squoosh.app pour un site rapide.
+Pour ajouter ou retirer des photos, modifiez la liste "galerie" en haut du fichier index.html.

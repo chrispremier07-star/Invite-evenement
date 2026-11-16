@@ -1,9 +1,0 @@
-node_modules
-dist
-prototype
-apps/api/drizzle
-package-lock.json
-playwright-report
-test-results
-backups
-PROMPT-PRODUCTION.md

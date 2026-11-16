@@ -1,0 +1,4 @@
+Déposez ici votre musique au format MP3 et nommez-la : musique.mp3
+(Pour un autre nom, modifiez "musique:" en haut de index.html.)
+
+Conseils : fichier de moins de 4 Mo (compressez en 128 kbps), et musique dont vous avez les droits.
